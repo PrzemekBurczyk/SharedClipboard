@@ -1,0 +1,42 @@
+﻿<Window x:Class="SharedClipboard.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Shared Clipboard" Height="350" Width="525">
+    <Grid Margin="0,10">
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="Auto" />
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <TextBlock Grid.Row="0" Text="Copy shortcut" Grid.Column="0" Margin="10,0" />
+
+        <Grid Grid.Row="1" Margin="0,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" MinWidth="74" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+            
+            <TextBox Grid.Column="0" Margin="10,0,5,0"/>
+            <Button Content="Register" Grid.Column="1" Margin="5,0"/>
+            <Button Content="Unregister" Grid.Column="2" Margin="5,0,10,0"/>
+        </Grid>
+
+        <TextBlock Grid.Row="2" Text="Paste shortcut" Grid.Column="0" Margin="10,0" />
+
+        <Grid Grid.Row="3" Margin="0,5">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="*" />
+                <ColumnDefinition Width="Auto" MinWidth="74" />
+                <ColumnDefinition Width="Auto" />
+            </Grid.ColumnDefinitions>
+
+            <TextBox Grid.Column="0" Margin="10,0,5,0"/>
+            <Button Content="Register" Grid.Column="1" Margin="5,0"/>
+            <Button Content="Unregister" Grid.Column="2" Margin="5,0,10,0"/>
+        </Grid>
+    </Grid>
+</Window>
