@@ -21,8 +21,8 @@
             </Grid.ColumnDefinitions>
             
             <TextBox Grid.Column="0" Margin="10,0,5,0"/>
-            <Button Content="Register" Grid.Column="1" Margin="5,0"/>
-            <Button Content="Unregister" Grid.Column="2" Margin="5,0,10,0"/>
+            <Button Click="RegisterCopyShortcutClick" Content="Register" Grid.Column="1" Margin="5,0"/>
+            <Button Click="UnregisterCopyShortcutClick" Content="Unregister" Grid.Column="2" Margin="5,0,10,0"/>
         </Grid>
 
         <TextBlock Grid.Row="2" Text="Paste shortcut" Grid.Column="0" Margin="10,0" />

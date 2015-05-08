@@ -24,5 +24,15 @@ namespace SharedClipboard
         {
             InitializeComponent();
         }
+
+        private void RegisterCopyShortcutClick(object sender, RoutedEventArgs e)
+        {
+
+        }
+
+        private void UnregisterCopyShortcutClick(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
