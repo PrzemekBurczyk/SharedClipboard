@@ -4,6 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Runtime.InteropServices;
+using System.Windows.Forms;
+using System.Drawing;
+using System.Collections.Specialized;
 
 namespace SharedClipboard
 {
@@ -97,25 +100,47 @@ namespace SharedClipboard
         {
             if (m.Msg == WM_CLIPBOARDUPDATE)
             {
+                PublishClipboard();
+
                 if (ClipboardChanged != null)
                 {
                     ClipboardChanged(this, EventArgs.Empty);
                 }
-                //IDataObject iData = Clipboard.GetDataObject();      // Clipboard's data.
-
-                ///* Depending on the clipboard's current data format we can process the data differently. 
-                // * Feel free to add more checks if you want to process more formats. */
-                //if (iData.GetDataPresent(DataFormats.Text))
-                //{
-                //    string text = (string)iData.GetData(DataFormats.Text);
-                //    // do something with it
-                //}
-                //else if (iData.GetDataPresent(DataFormats.Bitmap))
-                //{
-                //    Bitmap image = (Bitmap)iData.GetData(DataFormats.Bitmap);
-                //    // do something with it
-                //}
             }
+        }
+
+        private void PublishClipboard()
+        {
+            IDataObject data = Clipboard.GetDataObject();
+
+            if (Clipboard.ContainsText())
+            {
+                string text = Clipboard.GetText();
+                Console.WriteLine(text);
+            }
+            else if (Clipboard.ContainsImage())
+            {
+                Bitmap image = (Bitmap) Clipboard.GetImage();
+                Console.WriteLine(image.Height + " x " + image.Width);
+            }
+            else if (Clipboard.ContainsFileDropList())
+            {
+                StringCollection filePaths = Clipboard.GetFileDropList();
+                foreach (string filePath in filePaths)
+                {
+                    Console.WriteLine(filePath);
+                }
+            }
+        }
+
+        internal void CopySharedToLocal()
+        {
+            //Clipboard.SetText("Shared text!");
+
+            StringCollection filePaths = new StringCollection();
+            filePaths.Add(@"C:\tmp\tmp.file");
+            filePaths.Add(@"C:\tmp\second_tmp.file");
+            Clipboard.SetFileDropList(filePaths);
         }
     }
 

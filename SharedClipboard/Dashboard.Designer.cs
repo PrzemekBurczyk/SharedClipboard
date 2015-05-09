@@ -33,8 +33,11 @@
             this.btnRegister = new System.Windows.Forms.Button();
             this.btnUnregister = new System.Windows.Forms.Button();
             this.lbNotice = new System.Windows.Forms.Label();
-            this.tbClipboard = new System.Windows.Forms.TextBox();
+            this.tbClipboardText = new System.Windows.Forms.TextBox();
             this.lbClipboard = new System.Windows.Forms.Label();
+            this.pbClipboardImage = new System.Windows.Forms.PictureBox();
+            this.lbClipboardFileDropList = new System.Windows.Forms.ListBox();
+            ((System.ComponentModel.ISupportInitialize)(this.pbClipboardImage)).BeginInit();
             this.SuspendLayout();
             // 
             // lbKey
@@ -87,12 +90,12 @@
             this.lbNotice.Text = "Please click the textbox and press keys.  The keys must be in combination with th" +
     "e Ctrl, Shift or Alt (e.g. Ctrl+Alt+T)";
             // 
-            // tbClipboard
+            // tbClipboardText
             // 
-            this.tbClipboard.Location = new System.Drawing.Point(108, 68);
-            this.tbClipboard.Name = "tbClipboard";
-            this.tbClipboard.Size = new System.Drawing.Size(447, 20);
-            this.tbClipboard.TabIndex = 5;
+            this.tbClipboardText.Location = new System.Drawing.Point(108, 68);
+            this.tbClipboardText.Name = "tbClipboardText";
+            this.tbClipboardText.Size = new System.Drawing.Size(447, 20);
+            this.tbClipboardText.TabIndex = 5;
             // 
             // lbClipboard
             // 
@@ -103,13 +106,32 @@
             this.lbClipboard.TabIndex = 6;
             this.lbClipboard.Text = "Clipboard ";
             // 
+            // pbClipboardImage
+            // 
+            this.pbClipboardImage.Location = new System.Drawing.Point(330, 94);
+            this.pbClipboardImage.Name = "pbClipboardImage";
+            this.pbClipboardImage.Size = new System.Drawing.Size(225, 225);
+            this.pbClipboardImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbClipboardImage.TabIndex = 7;
+            this.pbClipboardImage.TabStop = false;
+            // 
+            // lbClipboardFileDropList
+            // 
+            this.lbClipboardFileDropList.FormattingEnabled = true;
+            this.lbClipboardFileDropList.Location = new System.Drawing.Point(12, 94);
+            this.lbClipboardFileDropList.Name = "lbClipboardFileDropList";
+            this.lbClipboardFileDropList.Size = new System.Drawing.Size(312, 225);
+            this.lbClipboardFileDropList.TabIndex = 8;
+            // 
             // Dashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(572, 108);
+            this.ClientSize = new System.Drawing.Size(572, 331);
+            this.Controls.Add(this.lbClipboardFileDropList);
+            this.Controls.Add(this.pbClipboardImage);
             this.Controls.Add(this.lbClipboard);
-            this.Controls.Add(this.tbClipboard);
+            this.Controls.Add(this.tbClipboardText);
             this.Controls.Add(this.lbNotice);
             this.Controls.Add(this.btnUnregister);
             this.Controls.Add(this.btnRegister);
@@ -119,6 +141,7 @@
             this.MaximizeBox = false;
             this.Name = "Dashboard";
             this.Text = "Shared Clipboard Dashboard";
+            ((System.ComponentModel.ISupportInitialize)(this.pbClipboardImage)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -132,7 +155,9 @@
         private System.Windows.Forms.Button btnUnregister;
         private System.Windows.Forms.Label lbNotice;
         private System.Windows.Forms.Label lbClipboard;
-        private System.Windows.Forms.TextBox tbClipboard;
+        private System.Windows.Forms.TextBox tbClipboardText;
+        private System.Windows.Forms.PictureBox pbClipboardImage;
+        private System.Windows.Forms.ListBox lbClipboardFileDropList;
     }
 }
 

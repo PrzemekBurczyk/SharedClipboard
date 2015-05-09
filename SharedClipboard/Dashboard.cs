@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Collections.Specialized;
 using System.ComponentModel;
 using System.Data;
 using System.Drawing;
@@ -98,7 +99,7 @@ namespace SharedClipboard
 
         void HotKeyPressed(object sender, EventArgs e)
         {
-            Console.WriteLine("HotKeyPressed");
+            clipboardManager.CopySharedToLocal();
         }
 
 
@@ -136,7 +137,27 @@ namespace SharedClipboard
             //    this.WindowState = FormWindowState.Normal;
             //}
             //this.Activate();
-            Console.WriteLine("Clipboard changed");
+            IDataObject data = Clipboard.GetDataObject();
+
+            if (Clipboard.ContainsText())
+            {
+                string text = Clipboard.GetText();
+                tbClipboardText.Text = text;
+            }
+            else if (Clipboard.ContainsImage())
+            {
+                Bitmap image = (Bitmap) Clipboard.GetImage();
+                pbClipboardImage.Image = image;
+            }
+            else if (Clipboard.ContainsFileDropList())
+            {
+                lbClipboardFileDropList.Items.Clear();
+                StringCollection filePaths = Clipboard.GetFileDropList();
+                foreach (string filePath in filePaths)
+                {
+                    lbClipboardFileDropList.Items.Add(filePath);
+                }
+            }
         }
 
         /// <summary>
