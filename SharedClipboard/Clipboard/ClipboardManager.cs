@@ -29,7 +29,7 @@ namespace SharedClipboard
         // See http://msdn.microsoft.com/en-us/library/ms633541%28v=vs.85%29.aspx
         // See http://msdn.microsoft.com/en-us/library/ms649033%28VS.85%29.aspx
         [DllImport("user32.dll", SetLastError = true)]
-        private extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
+        private static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
 
         /// <summary>
         /// Specify whether this object is disposed.
