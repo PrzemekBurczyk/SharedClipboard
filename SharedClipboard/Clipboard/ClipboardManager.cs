@@ -10,26 +10,26 @@ namespace SharedClipboard
     public class ClipboardManager : IDisposable
     {
         
-        public static IntPtr HWND_MESSAGE = new IntPtr(-3);
+        private static IntPtr HWND_MESSAGE = new IntPtr(-3);
 
         /// <summary>
         /// Adds the given window to the system-maintained clipboard format listener list.
         /// </summary>
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        public static extern bool AddClipboardFormatListener(IntPtr hwnd);
+        private static extern bool AddClipboardFormatListener(IntPtr hwnd);
 
         /// <summary>
         /// Removes the given window from the system-maintained clipboard format listener list.
         /// </summary>
         [DllImport("user32.dll", SetLastError = true)]
         [return: MarshalAs(UnmanagedType.Bool)]
-        static extern bool RemoveClipboardFormatListener(IntPtr hwnd);
+        private static extern bool RemoveClipboardFormatListener(IntPtr hwnd);
 
         // See http://msdn.microsoft.com/en-us/library/ms633541%28v=vs.85%29.aspx
         // See http://msdn.microsoft.com/en-us/library/ms649033%28VS.85%29.aspx
         [DllImport("user32.dll", SetLastError = true)]
-        public static extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
+        private extern IntPtr SetParent(IntPtr hWndChild, IntPtr hWndNewParent);
 
         /// <summary>
         /// Specify whether this object is disposed.
