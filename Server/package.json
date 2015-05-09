@@ -1,0 +1,14 @@
+{
+    "name": "Server",
+    "version": "0.1.0",
+    "description": "Shared Clipboard server application",
+    "main": "app.js",
+    "author": {
+        "name": "Przemek",
+        "email": ""
+    },
+    "dependencies": {
+        "socket.io": "1.2.1",
+        "express": "4.8.5"
+    }
+}

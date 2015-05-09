@@ -7,6 +7,7 @@ using System.Runtime.InteropServices;
 using System.Windows.Forms;
 using System.Drawing;
 using System.Collections.Specialized;
+using Quobject.SocketIoClientDotNet.Client;
 
 namespace SharedClipboard
 {
@@ -62,6 +63,8 @@ namespace SharedClipboard
         /// </summary>
         public event EventHandler ClipboardChanged;
 
+        public Socket socket = null;
+
         public ClipboardManager(IntPtr handle, int id)
         {
             this.Handle = handle;
@@ -69,6 +72,24 @@ namespace SharedClipboard
 
             //SetParent(Handle, HWND_MESSAGE); do we need this?
             AddClipboardFormatListener(Handle);
+
+            InitializeServerConnection();
+        }
+
+        private void InitializeServerConnection() {
+            var socket = IO.Socket("http://127.0.0.1:3000");
+            Console.WriteLine("Connecting to server...");
+
+            socket.On(Socket.EVENT_CONNECT, () =>
+            {
+                Console.WriteLine("Connected to server.");
+                socket.Emit("hi", "Clipboard hello");
+            });
+
+            socket.On("hi", (data) =>
+            {
+                Console.WriteLine(data);
+            });
         }
 
         public void Dispose()
@@ -91,6 +112,11 @@ namespace SharedClipboard
             if (disposing)
             {
                 RemoveClipboardFormatListener(Handle);
+
+                if (socket != null)
+                {
+                    socket.Disconnect();
+                }
             }
 
             disposed = true;
