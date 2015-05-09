@@ -12,7 +12,6 @@ namespace SharedClipboard
         
         public static IntPtr HWND_MESSAGE = new IntPtr(-3);
 
-        // See http://msdn.microsoft.com/en-us/library/ms632599%28VS.85%29.aspx#message_only
         /// <summary>
         /// Adds the given window to the system-maintained clipboard format listener list.
         /// </summary>
@@ -37,7 +36,6 @@ namespace SharedClipboard
         /// </summary>
         bool disposed = false;
 
-        // See http://msdn.microsoft.com/en-us/library/ms649021%28v=vs.85%29.aspx
         /// <summary>
         /// Sent when the contents of the clipboard have changed.
         /// </summary>
