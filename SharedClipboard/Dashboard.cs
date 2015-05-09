@@ -12,7 +12,11 @@ namespace SharedClipboard
 {
     public partial class Dashboard : Form
     {
-        HotKeyRegister hotKeyToRegister = null;
+        private const int hotKeyRegisterId = 100;
+        private HotKeyRegister hotKeyToRegister = null;
+
+        private const int clipboardManagerId = 101;
+        private ClipboardManager clipboardManager = null;
 
         Keys registerKey = Keys.None;
 
@@ -21,6 +25,14 @@ namespace SharedClipboard
         public Dashboard()
         {
             InitializeComponent();
+
+            Load += Dashboard_Load;
+        }
+
+        void Dashboard_Load(object sender, EventArgs e)
+        {
+            clipboardManager = new ClipboardManager(this.Handle, clipboardManagerId);
+            clipboardManager.ClipboardChanged += new EventHandler(ClipboardChanged);
         }
 
 
@@ -47,8 +59,7 @@ namespace SharedClipboard
                     this.registerModifiers = modifiers;
 
                     // Display the pressed key in the textbox.
-                    tbHotKey.Text = string.Format("{0}+{1}",
-                        this.registerModifiers, this.registerKey);
+                    tbHotKey.Text = string.Format("{0}+{1}", this.registerModifiers, this.registerKey);
 
                     // Enable the button.
                     btnRegister.Enabled = true;
@@ -65,8 +76,7 @@ namespace SharedClipboard
             try
             {
                 // Register the hotkey.
-                hotKeyToRegister = new HotKeyRegister(this.Handle, 100,
-                    this.registerModifiers, this.registerKey);
+                hotKeyToRegister = new HotKeyRegister(this.Handle, hotKeyRegisterId, this.registerModifiers, this.registerKey);
 
                 // Register the HotKeyPressed event.
                 hotKeyToRegister.HotKeyPressed += new EventHandler(HotKeyPressed);
@@ -86,18 +96,9 @@ namespace SharedClipboard
             }
         }
 
-        /// <summary>
-        /// Show a message box if the HotKeyPressed event is raised.
-        /// </summary>
         void HotKeyPressed(object sender, EventArgs e)
         {
-            //if (this.WindowState == FormWindowState.Minimized)
-            //{
-            //    this.WindowState = FormWindowState.Normal;
-            //}
-            //this.Activate();
             Console.WriteLine("HotKeyPressed");
-            tbClipboard.Text = "Hot Key Pressed";
         }
 
 
@@ -119,9 +120,27 @@ namespace SharedClipboard
             btnUnregister.Enabled = false;
         }
 
+        protected override void WndProc(ref Message m)
+        {
+            base.WndProc(ref m);
+            if (clipboardManager != null)
+            {
+                clipboardManager.HandleWndProc(ref m);
+            }
+        }
+
+        void ClipboardChanged(object sender, EventArgs e)
+        {
+            //if (this.WindowState == FormWindowState.Minimized)
+            //{
+            //    this.WindowState = FormWindowState.Normal;
+            //}
+            //this.Activate();
+            Console.WriteLine("Clipboard changed");
+        }
 
         /// <summary>
-        /// Dispose the hotKeyToRegister when the form is closed.
+        /// Dispose ClipboardManager and HotKeyRegister when the form is closed.
         /// </summary>
         protected override void OnClosed(EventArgs e)
         {
@@ -129,6 +148,12 @@ namespace SharedClipboard
             {
                 hotKeyToRegister.Dispose();
                 hotKeyToRegister = null;
+            }
+
+            if (clipboardManager != null)
+            {
+                clipboardManager.Dispose();
+                clipboardManager = null;
             }
 
             base.OnClosed(e);
