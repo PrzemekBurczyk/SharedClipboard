@@ -33,6 +33,8 @@
             this.btnRegister = new System.Windows.Forms.Button();
             this.btnUnregister = new System.Windows.Forms.Button();
             this.lbNotice = new System.Windows.Forms.Label();
+            this.tbClipboard = new System.Windows.Forms.TextBox();
+            this.lbClipboard = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // lbKey
@@ -85,11 +87,29 @@
             this.lbNotice.Text = "Please click the textbox and press keys.  The keys must be in combination with th" +
     "e Ctrl, Shift or Alt (e.g. Ctrl+Alt+T)";
             // 
+            // tbClipboard
+            // 
+            this.tbClipboard.Location = new System.Drawing.Point(108, 68);
+            this.tbClipboard.Name = "tbClipboard";
+            this.tbClipboard.Size = new System.Drawing.Size(447, 20);
+            this.tbClipboard.TabIndex = 5;
+            // 
+            // lbClipboard
+            // 
+            this.lbClipboard.AutoSize = true;
+            this.lbClipboard.Location = new System.Drawing.Point(38, 71);
+            this.lbClipboard.Name = "lbClipboard";
+            this.lbClipboard.Size = new System.Drawing.Size(54, 13);
+            this.lbClipboard.TabIndex = 6;
+            this.lbClipboard.Text = "Clipboard ";
+            // 
             // Dashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(572, 70);
+            this.ClientSize = new System.Drawing.Size(572, 108);
+            this.Controls.Add(this.lbClipboard);
+            this.Controls.Add(this.tbClipboard);
             this.Controls.Add(this.lbNotice);
             this.Controls.Add(this.btnUnregister);
             this.Controls.Add(this.btnRegister);
@@ -111,6 +131,8 @@
         private System.Windows.Forms.Button btnRegister;
         private System.Windows.Forms.Button btnUnregister;
         private System.Windows.Forms.Label lbNotice;
+        private System.Windows.Forms.Label lbClipboard;
+        private System.Windows.Forms.TextBox tbClipboard;
     }
 }
 

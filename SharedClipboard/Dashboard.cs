@@ -27,8 +27,7 @@ namespace SharedClipboard
         /// <summary>
         /// Handle the KeyDown of tbHotKey. In this event handler, check the pressed keys.
         /// The keys that must be pressed in combination with the key Ctrl, Shift or Alt,
-        /// like Ctrl+Alt+T. The method HotKeyRegister.GetModifiers could check whether 
-        /// "T" is pressed.
+        /// like Ctrl+Alt+T.
         /// </summary>
         private void tbHotKey_KeyDown(object sender, KeyEventArgs e)
         {
@@ -98,6 +97,7 @@ namespace SharedClipboard
             //}
             //this.Activate();
             Console.WriteLine("HotKeyPressed");
+            tbClipboard.Text = "Hot Key Pressed";
         }
 
 
