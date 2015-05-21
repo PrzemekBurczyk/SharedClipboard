@@ -13,15 +13,20 @@ namespace SharedClipboard
 {
     public partial class Dashboard : Form
     {
-        private const int hotKeyRegisterId = 100;
-        private HotKeyRegister hotKeyToRegister = null;
+        private const int copyHotKeyRegisterId = 100;
+        private HotKeyRegister copyHotKeyToRegister = null;
 
-        private const int clipboardManagerId = 101;
+        private const int pasteHotKeyRegisterId = 101;
+        private HotKeyRegister pasteHotKeyToRegister = null;
+
+        private const int clipboardManagerId = 102;
         private ClipboardManager clipboardManager = null;
 
-        Keys registerKey = Keys.None;
+        Keys copyRegisterKey = Keys.None;
+        Keys pasteRegisterKey = Keys.None;
 
-        KeyModifiers registerModifiers = KeyModifiers.None;
+        KeyModifiers copyRegisterModifiers = KeyModifiers.None;
+        KeyModifiers pasteRegisterModifiers = KeyModifiers.None;
 
         public Dashboard()
         {
@@ -42,7 +47,7 @@ namespace SharedClipboard
         /// The keys that must be pressed in combination with the key Ctrl, Shift or Alt,
         /// like Ctrl+Alt+T.
         /// </summary>
-        private void tbHotKey_KeyDown(object sender, KeyEventArgs e)
+        private void tbCopyHotKey_KeyDown(object sender, KeyEventArgs e)
         {
             // The key event should not be sent to the underlying control.
             e.SuppressKeyPress = true;
@@ -56,11 +61,11 @@ namespace SharedClipboard
                 // If the pressed key is valid...
                 if (key != Keys.None)
                 {
-                    this.registerKey = key;
-                    this.registerModifiers = modifiers;
+                    this.copyRegisterKey = key;
+                    this.copyRegisterModifiers = modifiers;
 
                     // Display the pressed key in the textbox.
-                    tbCopyHotKey.Text = string.Format("{0}+{1}", this.registerModifiers, this.registerKey);
+                    tbCopyHotKey.Text = string.Format("{0}+{1}", this.copyRegisterModifiers, this.copyRegisterKey);
 
                     // Enable the button.
                     btnCopyRegister.Enabled = true;
@@ -72,15 +77,15 @@ namespace SharedClipboard
         /// <summary>
         /// Handle the Click event of btnRegister.
         /// </summary>
-        private void btnRegister_Click(object sender, EventArgs e)
+        private void btnCopyRegister_Click(object sender, EventArgs e)
         {
             try
             {
                 // Register the hotkey.
-                hotKeyToRegister = new HotKeyRegister(this.Handle, hotKeyRegisterId, this.registerModifiers, this.registerKey);
+                copyHotKeyToRegister = new HotKeyRegister(this.Handle, copyHotKeyRegisterId, this.copyRegisterModifiers, this.copyRegisterKey);
 
                 // Register the HotKeyPressed event.
-                hotKeyToRegister.HotKeyPressed += new EventHandler(HotKeyPressed);
+                copyHotKeyToRegister.HotKeyPressed += new EventHandler(CopyHotKeyPressed);
 
                 // Update the UI.
                 btnCopyRegister.Enabled = false;
@@ -97,28 +102,101 @@ namespace SharedClipboard
             }
         }
 
-        void HotKeyPressed(object sender, EventArgs e)
+        void CopyHotKeyPressed(object sender, EventArgs e)
         {
-            clipboardManager.CopySharedToLocal();
+            Console.WriteLine("COPY");
+            clipboardManager.PublishClipboard();
         }
 
 
         /// <summary>
         /// Handle the Click event of btnUnregister.
         /// </summary>
-        private void btnUnregister_Click(object sender, EventArgs e)
+        private void btnCopyUnregister_Click(object sender, EventArgs e)
         {
             // Dispose the hotKeyToRegister.
-            if (hotKeyToRegister != null)
+            if (copyHotKeyToRegister != null)
             {
-                hotKeyToRegister.Dispose();
-                hotKeyToRegister = null;
+                copyHotKeyToRegister.Dispose();
+                copyHotKeyToRegister = null;
             }
 
             // Update the UI.
             tbCopyHotKey.Enabled = true;
             btnCopyRegister.Enabled = true;
             btnCopyUnregister.Enabled = false;
+        }
+
+        private void tbPasteHotKey_KeyDown(object sender, System.Windows.Forms.KeyEventArgs e)
+        {
+            // The key event should not be sent to the underlying control.
+            e.SuppressKeyPress = true;
+
+            // Check whether the modifier keys are pressed.
+            if (e.Modifiers != Keys.None)
+            {
+                Keys key = Keys.None;
+                KeyModifiers modifiers = HotKeyRegister.GetModifiers(e.KeyData, out key);
+
+                // If the pressed key is valid...
+                if (key != Keys.None)
+                {
+                    this.pasteRegisterKey = key;
+                    this.pasteRegisterModifiers = modifiers;
+
+                    // Display the pressed key in the textbox.
+                    tbPasteHotKey.Text = string.Format("{0}+{1}", this.pasteRegisterModifiers, this.pasteRegisterKey);
+
+                    // Enable the button.
+                    btnPasteRegister.Enabled = true;
+                }
+            }
+        }
+
+        private void btnPasteRegister_Click(object sender, System.EventArgs e)
+        {
+            try
+            {
+                // Register the hotkey.
+                pasteHotKeyToRegister = new HotKeyRegister(this.Handle, pasteHotKeyRegisterId, this.pasteRegisterModifiers, this.pasteRegisterKey);
+
+                // Register the HotKeyPressed event.
+                pasteHotKeyToRegister.HotKeyPressed += new EventHandler(PasteHotKeyPressed);
+
+                // Update the UI.
+                btnPasteRegister.Enabled = false;
+                tbPasteHotKey.Enabled = false;
+                btnPasteUnregister.Enabled = true;
+            }
+            catch (ArgumentException argumentException)
+            {
+                MessageBox.Show(argumentException.Message);
+            }
+            catch (ApplicationException applicationException)
+            {
+                MessageBox.Show(applicationException.Message);
+            }
+        }
+
+        private void btnPasteUnregister_Click(object sender, System.EventArgs e)
+        {
+            // Dispose the hotKeyToRegister.
+            if (pasteHotKeyToRegister != null)
+            {
+                pasteHotKeyToRegister.Dispose();
+                pasteHotKeyToRegister = null;
+            }
+
+            // Update the UI.
+            tbPasteHotKey.Enabled = true;
+            btnPasteRegister.Enabled = true;
+            btnPasteUnregister.Enabled = false;
+        }
+
+        void PasteHotKeyPressed(object sender, EventArgs e)
+        {
+            Console.WriteLine("PASTE");
+            clipboardManager.CopySharedToLocal();
         }
 
         protected override void WndProc(ref Message m)
@@ -165,10 +243,16 @@ namespace SharedClipboard
         /// </summary>
         protected override void OnClosed(EventArgs e)
         {
-            if (hotKeyToRegister != null)
+            if (copyHotKeyToRegister != null)
             {
-                hotKeyToRegister.Dispose();
-                hotKeyToRegister = null;
+                copyHotKeyToRegister.Dispose();
+                copyHotKeyToRegister = null;
+            }
+
+            if (pasteHotKeyToRegister != null)
+            {
+                pasteHotKeyToRegister.Dispose();
+                pasteHotKeyToRegister = null;
             }
 
             if (clipboardManager != null)

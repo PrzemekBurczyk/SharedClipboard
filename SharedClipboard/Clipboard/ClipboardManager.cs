@@ -65,6 +65,8 @@ namespace SharedClipboard
 
         public Socket socket = null;
 
+        private string sharedText = null;
+
         public ClipboardManager(IntPtr handle, int id)
         {
             this.Handle = handle;
@@ -77,18 +79,17 @@ namespace SharedClipboard
         }
 
         private void InitializeServerConnection() {
-            var socket = IO.Socket("http://127.0.0.1:3000");
+            socket = IO.Socket("http://127.0.0.1:3000");
             Console.WriteLine("Connecting to server...");
 
             socket.On(Socket.EVENT_CONNECT, () =>
             {
                 Console.WriteLine("Connected to server.");
-                socket.Emit("hi", "Clipboard hello");
             });
 
-            socket.On("hi", (data) =>
+            socket.On("clipboard_change", (data) =>
             {
-                Console.WriteLine(data);
+                sharedText = (string) data;
             });
         }
 
@@ -126,7 +127,7 @@ namespace SharedClipboard
         {
             if (m.Msg == WM_CLIPBOARDUPDATE)
             {
-                PublishClipboard();
+                //PublishClipboard();
 
                 if (ClipboardChanged != null)
                 {
@@ -135,7 +136,7 @@ namespace SharedClipboard
             }
         }
 
-        private void PublishClipboard()
+        internal void PublishClipboard()
         {
             IDataObject data = Clipboard.GetDataObject();
 
@@ -143,6 +144,7 @@ namespace SharedClipboard
             {
                 string text = Clipboard.GetText();
                 Console.WriteLine(text);
+                socket.Emit("clipboard_change", text);
             }
             else if (Clipboard.ContainsImage())
             {
@@ -161,12 +163,12 @@ namespace SharedClipboard
 
         internal void CopySharedToLocal()
         {
-            //Clipboard.SetText("Shared text!");
+            Clipboard.SetText(sharedText);
 
-            StringCollection filePaths = new StringCollection();
-            filePaths.Add(@"C:\tmp\tmp.file");
-            filePaths.Add(@"C:\tmp\second_tmp.file");
-            Clipboard.SetFileDropList(filePaths);
+            //StringCollection filePaths = new StringCollection();
+            //filePaths.Add(@"C:\tmp\tmp.file");
+            //filePaths.Add(@"C:\tmp\second_tmp.file");
+            //Clipboard.SetFileDropList(filePaths);
         }
     }
 

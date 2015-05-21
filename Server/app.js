@@ -21,10 +21,9 @@ http.listen(3000, function () {
 io.on('connection', function (socket) {
     console.log('New user connected');
     
-    socket.emit('hi', 'data');
-    
-    socket.on('hi', function (data) {
-        console.log(data);
+    socket.on('clipboard_change', function (data) {
+        console.log('broadcasting ' + data);
+        socket.broadcast.emit('clipboard_change', data);
     });
 	
 	socket.on('text', function(data) {

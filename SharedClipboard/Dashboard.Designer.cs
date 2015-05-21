@@ -60,7 +60,7 @@
             this.tbCopyHotKey.Name = "tbCopyHotKey";
             this.tbCopyHotKey.Size = new System.Drawing.Size(286, 20);
             this.tbCopyHotKey.TabIndex = 1;
-            this.tbCopyHotKey.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbHotKey_KeyDown);
+            this.tbCopyHotKey.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbCopyHotKey_KeyDown);
             // 
             // btnCopyRegister
             // 
@@ -71,7 +71,7 @@
             this.btnCopyRegister.TabIndex = 2;
             this.btnCopyRegister.Text = "Register";
             this.btnCopyRegister.UseVisualStyleBackColor = true;
-            this.btnCopyRegister.Click += new System.EventHandler(this.btnRegister_Click);
+            this.btnCopyRegister.Click += new System.EventHandler(this.btnCopyRegister_Click);
             // 
             // btnCopyUnregister
             // 
@@ -82,7 +82,7 @@
             this.btnCopyUnregister.TabIndex = 3;
             this.btnCopyUnregister.Text = "Unregister";
             this.btnCopyUnregister.UseVisualStyleBackColor = true;
-            this.btnCopyUnregister.Click += new System.EventHandler(this.btnUnregister_Click);
+            this.btnCopyUnregister.Click += new System.EventHandler(this.btnCopyUnregister_Click);
             // 
             // lbNotice
             // 
@@ -136,6 +136,7 @@
             this.btnPasteUnregister.TabIndex = 12;
             this.btnPasteUnregister.Text = "Unregister";
             this.btnPasteUnregister.UseVisualStyleBackColor = true;
+            this.btnPasteUnregister.Click += new System.EventHandler(this.btnPasteUnregister_Click);
             // 
             // btnPasteRegister
             // 
@@ -146,6 +147,7 @@
             this.btnPasteRegister.TabIndex = 11;
             this.btnPasteRegister.Text = "Register";
             this.btnPasteRegister.UseVisualStyleBackColor = true;
+            this.btnPasteRegister.Click += new System.EventHandler(this.btnPasteRegister_Click);
             // 
             // tbPasteHotKey
             // 
@@ -154,6 +156,7 @@
             this.tbPasteHotKey.Name = "tbPasteHotKey";
             this.tbPasteHotKey.Size = new System.Drawing.Size(286, 20);
             this.tbPasteHotKey.TabIndex = 10;
+            this.tbPasteHotKey.KeyDown += new System.Windows.Forms.KeyEventHandler(this.tbPasteHotKey_KeyDown);
             // 
             // lbPasteKey
             // 
