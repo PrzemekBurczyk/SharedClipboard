@@ -60,10 +60,10 @@ namespace SharedClipboard
                     this.registerModifiers = modifiers;
 
                     // Display the pressed key in the textbox.
-                    tbHotKey.Text = string.Format("{0}+{1}", this.registerModifiers, this.registerKey);
+                    tbCopyHotKey.Text = string.Format("{0}+{1}", this.registerModifiers, this.registerKey);
 
                     // Enable the button.
-                    btnRegister.Enabled = true;
+                    btnCopyRegister.Enabled = true;
                 }
             }
         }
@@ -83,9 +83,9 @@ namespace SharedClipboard
                 hotKeyToRegister.HotKeyPressed += new EventHandler(HotKeyPressed);
 
                 // Update the UI.
-                btnRegister.Enabled = false;
-                tbHotKey.Enabled = false;
-                btnUnregister.Enabled = true;
+                btnCopyRegister.Enabled = false;
+                tbCopyHotKey.Enabled = false;
+                btnCopyUnregister.Enabled = true;
             }
             catch (ArgumentException argumentException)
             {
@@ -116,9 +116,9 @@ namespace SharedClipboard
             }
 
             // Update the UI.
-            tbHotKey.Enabled = true;
-            btnRegister.Enabled = true;
-            btnUnregister.Enabled = false;
+            tbCopyHotKey.Enabled = true;
+            btnCopyRegister.Enabled = true;
+            btnCopyUnregister.Enabled = false;
         }
 
         protected override void WndProc(ref Message m)
