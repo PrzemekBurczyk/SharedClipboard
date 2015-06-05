@@ -8,11 +8,14 @@ using System.Windows.Forms;
 using System.Drawing;
 using System.Collections.Specialized;
 using Quobject.SocketIoClientDotNet.Client;
+using Newtonsoft.Json;
+using SharedClipboard.Utils;
 
-namespace SharedClipboard
+namespace SharedClipboard.Manager
 {
     public class ClipboardManager : IDisposable
     {
+        public static string CLIPBOARD_CHANGE = "clipboard_change";
         
         private static IntPtr HWND_MESSAGE = new IntPtr(-3);
 
@@ -87,7 +90,7 @@ namespace SharedClipboard
                 Console.WriteLine("Connected to server.");
             });
 
-            socket.On("clipboard_change", (data) =>
+            socket.On(CLIPBOARD_CHANGE, (data) =>
             {
                 sharedText = (string) data;
             });
@@ -140,16 +143,28 @@ namespace SharedClipboard
         {
             IDataObject data = Clipboard.GetDataObject();
 
+            bool emitEvent = false;
+            ClipboardData clipboardData = new ClipboardData();
+
             if (Clipboard.ContainsText())
             {
                 string text = Clipboard.GetText();
-                Console.WriteLine(text);
-                socket.Emit("clipboard_change", text);
+
+                clipboardData.Data = text;
+                clipboardData.Type = ClipboardDataType.TEXT;
+                clipboardData.Id = "1";
+
+                emitEvent = true;
             }
             else if (Clipboard.ContainsImage())
             {
                 Bitmap image = (Bitmap) Clipboard.GetImage();
-                Console.WriteLine(image.Height + " x " + image.Width);
+
+                clipboardData.Data = ImageUtils.ImageToBase64(image);
+                clipboardData.Type = ClipboardDataType.IMAGE;
+                clipboardData.Id = "1";
+
+                emitEvent = true;
             }
             else if (Clipboard.ContainsFileDropList())
             {
@@ -158,6 +173,17 @@ namespace SharedClipboard
                 {
                     Console.WriteLine(filePath);
                 }
+
+                //clipboardData.Data = text;
+                clipboardData.Type = ClipboardDataType.FILES;
+                clipboardData.Id = "1";
+
+                emitEvent = true;
+            }
+
+            if (emitEvent)
+            {
+                socket.Emit(CLIPBOARD_CHANGE, JsonConvert.SerializeObject(clipboardData));
             }
         }
 
