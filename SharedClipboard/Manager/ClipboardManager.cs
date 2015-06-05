@@ -68,7 +68,7 @@ namespace SharedClipboard.Manager
 
         public Socket socket = null;
 
-        private string sharedText = null;
+        private Dictionary<string, ClipboardData> sharedClipboard;
 
         public ClipboardManager(IntPtr handle, int id)
         {
@@ -92,13 +92,15 @@ namespace SharedClipboard.Manager
 
             socket.On(CLIPBOARD_CHANGE, (data) =>
             {
-                sharedText = (string) data;
+                ClipboardData clipboardData = JsonConvert.DeserializeObject<ClipboardData>((string) data);
+                sharedClipboard.Add(clipboardData.Id, clipboardData);
             });
         }
 
         public void Dispose()
         {
             Dispose(true);
+            socket.Close();
             GC.SuppressFinalize(this);
         }
 
@@ -141,8 +143,6 @@ namespace SharedClipboard.Manager
 
         internal void PublishClipboard()
         {
-            IDataObject data = Clipboard.GetDataObject();
-
             bool emitEvent = false;
             ClipboardData clipboardData = new ClipboardData();
 
@@ -189,8 +189,26 @@ namespace SharedClipboard.Manager
 
         internal void CopySharedToLocal()
         {
-            Clipboard.SetText(sharedText);
+            string Id = "1";
+            ClipboardData clipboardData = sharedClipboard[Id];
 
+            if (clipboardData != null)
+            {
+                switch (sharedClipboard[Id].Type)
+                {
+                    case ClipboardDataType.TEXT:
+                        Clipboard.SetText(clipboardData.Data);
+                        break;
+                    case ClipboardDataType.IMAGE:
+                        Clipboard.SetImage(ImageUtils.Base64ToImage(clipboardData.Data));
+                        break;
+                    case ClipboardDataType.FILES:
+                        break;
+                    default:
+                        Console.WriteLine("Unknown clipboard data type");
+                        break;
+                }
+            }
             //StringCollection filePaths = new StringCollection();
             //filePaths.Add(@"C:\tmp\tmp.file");
             //filePaths.Add(@"C:\tmp\second_tmp.file");

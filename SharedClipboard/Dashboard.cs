@@ -221,15 +221,23 @@ namespace SharedClipboard
             if (Clipboard.ContainsText())
             {
                 string text = Clipboard.GetText();
+
                 tbClipboardText.Text = text;
+                pbClipboardImage.Image = null;
+                lbClipboardFileDropList.Items.Clear();
             }
             else if (Clipboard.ContainsImage())
             {
                 Bitmap image = (Bitmap) Clipboard.GetImage();
+
+                tbClipboardText.Text = null;
                 pbClipboardImage.Image = image;
+                lbClipboardFileDropList.Items.Clear();
             }
             else if (Clipboard.ContainsFileDropList())
             {
+                tbClipboardText.Text = null;
+                pbClipboardImage.Image = null;
                 lbClipboardFileDropList.Items.Clear();
                 StringCollection filePaths = Clipboard.GetFileDropList();
                 foreach (string filePath in filePaths)
