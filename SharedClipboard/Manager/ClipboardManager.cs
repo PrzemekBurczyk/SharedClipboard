@@ -239,17 +239,23 @@ namespace SharedClipboard.Manager
                         Clipboard.SetImage(ImageUtils.Base64ToImage(clipboardData.Data));
                         break;
                     case ClipboardDataType.FILES:
+                        StringCollection filePaths = new StringCollection();
                         List<ClipboardFile> files = JsonConvert.DeserializeObject<List<ClipboardFile>>(clipboardData.Data);
+                        foreach(ClipboardFile clipboardFile in files)
+                        {
+                            string path = FileUtils.CreateTemporaryFile(clipboardFile.Name, clipboardFile.Data);
+                            if (path != null)
+                            {
+                                filePaths.Add(path);
+                            }
+                        }
+                        Clipboard.SetFileDropList(filePaths);
                         break;
                     default:
                         Console.WriteLine("Unknown clipboard data type");
                         break;
                 }
             }
-            //StringCollection filePaths = new StringCollection();
-            //filePaths.Add(@"C:\tmp\tmp.file");
-            //filePaths.Add(@"C:\tmp\second_tmp.file");
-            //Clipboard.SetFileDropList(filePaths);
         }
     }
 

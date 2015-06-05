@@ -97,5 +97,16 @@ namespace SharedClipboard.Utils
                 throw new FilesSizeLimitExceededException("Total files size exceeds limit of " + MAX_FILES_SIZE_BYTES + " bytes");
             }
         }
+
+        public static string CreateTemporaryFile(string name, string data)
+        {
+            if(name != null && data != null)
+            {
+                string path = Path.Combine(Path.GetTempPath(), name);
+                File.WriteAllBytes(path, Convert.FromBase64String(data));
+                return path;
+            }
+            return null;
+        }
     }
 }
