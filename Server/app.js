@@ -3,48 +3,53 @@
 var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
+var _ = require('underscore');
 
-var clipboardSize = 5;
-var clipboard = {}
-
-for (var i = 1; i <= clipboardSize; i++) {
-	clipboard[i] = {
-				"type": "",
-				"value": ""
-			};
+var EVENTS = {
+    CONNECTION: 'connection',
+    DISCONNECT: 'disconnect',
+    CLIPBOARD_CHANGE: 'clipboard_change',
+    ALL_CLIPBOARDS: 'all_clipboards',
+    GET_CLIPBOARD_BY_ID: 'get_clipboard_by_id',
+    GET_ALL_CLIPBOARDS: 'get_all_clipboards'
 }
+
+var clipboard = {}
 
 http.listen(3000, function () {
     console.log('listening on *:3000');
-}); 
+});
 
-io.on('connection', function (socket) {
+var isNotEmpty = function (object) {
+    return object !== undefined && object !== null && object !== '';
+}
+
+io.on(EVENTS.CONNECTION, function (socket) {
     console.log('New user connected');
     
-    socket.on('clipboard_change', function (data) {
-        console.log('broadcasting ' + data);
-        socket.broadcast.emit('clipboard_change', data);
+    socket.on(EVENTS.CLIPBOARD_CHANGE, function (clipboardData) {
+        if (isNotEmpty(clipboardData.Id) && isNotEmpty(clipboardData.Sender) && isNotEmpty(clipboardData.Type) && isNotEmpty(clipboardData.Data)) {
+            console.log('Clipboard changed:\n    Id: ' + clipboardData.Id + '\n    Sender: ' + clipboardData.Sender + '\n    Type: ' + clipboardData.Type + '\n    Data: ' + clipboardData.Data);
+            clipboard[clipboardData.Id] = clipboardData;
+            socket.broadcast.emit(EVENTS.CLIPBOARD_CHANGE, clipboardData);
+        } else {
+            console.log('Clipboard changed, but with incomplete data');
+        }
     });
-	
-	socket.on('text', function(data) {
-		console.log('received: ' + data);
-		clipboard[0].type = "text";
-		clipboard[0].value = data;
-	});
-	
-	socket.on('demand', function(data) {
-		if (data <= clipboardSize && data > 0) {
-			console.log('sending: ' + textData);
-			socket.emit('text', clipboard[data].value);
-		}
-	});
-
-    socket.on('disconnect', function () {
+    
+    socket.on(EVENTS.GET_CLIPBOARD_BY_ID, function (id) {
+        console.log('got request for clipboard: ' + id);
+        var requestedClipboard = clipboard[id];
+        if (isNotEmpty(clipboard)) {
+            socket.emit(EVENTS.CLIPBOARD_CHANGE, requestedClipboard);
+        }
+    });
+    
+    socket.on(EVENTS.GET_ALL_CLIPBOARDS, function () {
+        socket.emit(EVENTS.ALL_CLIPBOARDS, _.values(clipboard));
+    });
+    
+    socket.on(EVENTS.DISCONNECT, function () {
         console.log('User disconnected');
     });
 });
-
-//app.get('/', function (req, res) { 
-//    res.sendfile('index.html'); 
-//}); 
-

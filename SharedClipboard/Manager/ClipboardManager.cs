@@ -15,8 +15,14 @@ namespace SharedClipboard.Manager
 {
     public class ClipboardManager : IDisposable
     {
-        public static string CLIPBOARD_CHANGE = "clipboard_change";
-        
+        private class Events
+        {
+            public static string CLIPBOARD_CHANGE = "clipboard_change";
+            public static string GET_CLIPBOARD_BY_ID = "get_clipboard_by_id";
+            public static string ALL_CLIPBOARDS = "all_clipboards";
+            public static string GET_ALL_CLIPBOARDS = "get_all_clipboards";
+        }
+
         private static IntPtr HWND_MESSAGE = new IntPtr(-3);
 
         /// <summary>
@@ -66,6 +72,8 @@ namespace SharedClipboard.Manager
         /// </summary>
         public event EventHandler ClipboardChanged;
 
+        public event EventHandler<ClipboardData> SharedClipboardChanged;
+
         public Socket socket = null;
 
         private Dictionary<string, ClipboardData> sharedClipboard;
@@ -81,7 +89,8 @@ namespace SharedClipboard.Manager
             InitializeServerConnection();
         }
 
-        private void InitializeServerConnection() {
+        private void InitializeServerConnection()
+        {
             socket = IO.Socket("http://127.0.0.1:3000");
             Console.WriteLine("Connecting to server...");
 
@@ -90,10 +99,14 @@ namespace SharedClipboard.Manager
                 Console.WriteLine("Connected to server.");
             });
 
-            socket.On(CLIPBOARD_CHANGE, (data) =>
+            socket.On(Events.CLIPBOARD_CHANGE, (data) =>
             {
-                ClipboardData clipboardData = JsonConvert.DeserializeObject<ClipboardData>((string) data);
+                ClipboardData clipboardData = JsonConvert.DeserializeObject<ClipboardData>((string)data);
                 sharedClipboard.Add(clipboardData.Id, clipboardData);
+                if (SharedClipboardChanged != null)
+                {
+                    SharedClipboardChanged(this, clipboardData);
+                }
             });
         }
 
@@ -158,7 +171,7 @@ namespace SharedClipboard.Manager
             }
             else if (Clipboard.ContainsImage())
             {
-                Bitmap image = (Bitmap) Clipboard.GetImage();
+                Bitmap image = (Bitmap)Clipboard.GetImage();
 
                 clipboardData.Data = ImageUtils.ImageToBase64(image);
                 clipboardData.Type = ClipboardDataType.IMAGE;
@@ -183,7 +196,7 @@ namespace SharedClipboard.Manager
 
             if (emitEvent)
             {
-                socket.Emit(CLIPBOARD_CHANGE, JsonConvert.SerializeObject(clipboardData));
+                socket.Emit(Events.CLIPBOARD_CHANGE, JsonConvert.SerializeObject(clipboardData));
             }
         }
 
@@ -194,7 +207,7 @@ namespace SharedClipboard.Manager
 
             if (clipboardData != null)
             {
-                switch (sharedClipboard[Id].Type)
+                switch (clipboardData.Type)
                 {
                     case ClipboardDataType.TEXT:
                         Clipboard.SetText(clipboardData.Data);

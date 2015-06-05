@@ -13,8 +13,15 @@ namespace SharedClipboard.Manager
 
     public class ClipboardData
     {
+        public string Sender { get; set; }
         public string Data { get; set; }
         public ClipboardDataType Type { get; set; }
         public string Id { get; set; }
+    }
+
+    public class ClipboardFile
+    {
+        public string Name { get; set; }
+        public string Data { get; set; }
     }
 }

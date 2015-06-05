@@ -4,11 +4,12 @@
     "description": "Shared Clipboard server application",
     "main": "app.js",
     "author": {
-        "name": "Przemek",
-        "email": ""
+        "name": "Przemek Burczyk",
+        "email": "przemek.burczyk@gmail.com"
     },
     "dependencies": {
         "socket.io": "1.2.1",
-        "express": "4.8.5"
+        "express": "4.8.5",
+        "underscore": "1.8.3"
     }
 }

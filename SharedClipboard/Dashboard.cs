@@ -1,4 +1,5 @@
 ﻿using SharedClipboard.Manager;
+using SharedClipboard.Utils;
 using System;
 using System.Collections.Generic;
 using System.Collections.Specialized;
@@ -40,6 +41,7 @@ namespace SharedClipboard
         {
             clipboardManager = new ClipboardManager(this.Handle, clipboardManagerId);
             clipboardManager.ClipboardChanged += new EventHandler(ClipboardChanged);
+            clipboardManager.SharedClipboardChanged += new EventHandler<ClipboardData>(SharedClipboardChanged);
         }
 
 
@@ -216,33 +218,69 @@ namespace SharedClipboard
             //    this.WindowState = FormWindowState.Normal;
             //}
             //this.Activate();
-            IDataObject data = Clipboard.GetDataObject();
 
             if (Clipboard.ContainsText())
             {
                 string text = Clipboard.GetText();
 
-                tbClipboardText.Text = text;
-                pbClipboardImage.Image = null;
-                lbClipboardFileDropList.Items.Clear();
+                tbLocalClipboardText.Text = text;
+                pbLocalClipboardImage.Image = null;
+                lbLocalClipboardFileDropList.Items.Clear();
             }
             else if (Clipboard.ContainsImage())
             {
-                Bitmap image = (Bitmap) Clipboard.GetImage();
+                Bitmap image = (Bitmap)Clipboard.GetImage();
 
-                tbClipboardText.Text = null;
-                pbClipboardImage.Image = image;
-                lbClipboardFileDropList.Items.Clear();
+                tbLocalClipboardText.Text = null;
+                pbLocalClipboardImage.Image = image;
+                lbLocalClipboardFileDropList.Items.Clear();
             }
             else if (Clipboard.ContainsFileDropList())
             {
-                tbClipboardText.Text = null;
-                pbClipboardImage.Image = null;
-                lbClipboardFileDropList.Items.Clear();
+                tbLocalClipboardText.Text = null;
+                pbLocalClipboardImage.Image = null;
+                lbLocalClipboardFileDropList.Items.Clear();
                 StringCollection filePaths = Clipboard.GetFileDropList();
                 foreach (string filePath in filePaths)
                 {
-                    lbClipboardFileDropList.Items.Add(filePath);
+                    lbLocalClipboardFileDropList.Items.Add(filePath);
+                }
+            }
+        }
+
+        void SharedClipboardChanged(object sender, ClipboardData clipboardData)
+        {
+            if (clipboardData != null)
+            {
+                switch (clipboardData.Type)
+                {
+                    case ClipboardDataType.TEXT:
+                        string text = clipboardData.Data;
+
+                        tbSharedClipboardText.Text = text;
+                        pbSharedClipboardImage.Image = null;
+                        lbSharedClipboardFileDropList.Items.Clear();
+                        break;
+                    case ClipboardDataType.IMAGE:
+                        Image image = ImageUtils.Base64ToImage(clipboardData.Data);
+
+                        tbSharedClipboardText.Text = null;
+                        pbSharedClipboardImage.Image = image;
+                        lbSharedClipboardFileDropList.Items.Clear();
+                        break;
+                    case ClipboardDataType.FILES:
+                        tbSharedClipboardText.Text = null;
+                        pbSharedClipboardImage.Image = null;
+                        lbSharedClipboardFileDropList.Items.Clear();
+                        //StringCollection filePaths = Clipboard.GetFileDropList();
+                        //foreach (string filePath in filePaths)
+                        //{
+                        //    lbSharedClipboardFileDropList.Items.Add(filePath);
+                        //}
+                        break;
+                    default:
+                        Console.WriteLine("Unknown clipboard data type");
+                        break;
                 }
             }
         }
