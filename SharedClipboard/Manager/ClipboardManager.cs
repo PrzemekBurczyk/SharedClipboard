@@ -183,12 +183,7 @@ namespace SharedClipboard.Manager
             else if (Clipboard.ContainsFileDropList())
             {
                 StringCollection filePaths = Clipboard.GetFileDropList();
-                foreach (string filePath in filePaths)
-                {
-                    //File.Exists(filePath);
-                    //File.GetAttributes(filePath)
-                    Console.WriteLine(filePath);
-                }
+                
 
                 //clipboardData.Data = text;
                 clipboardData.Type = ClipboardDataType.FILES;
