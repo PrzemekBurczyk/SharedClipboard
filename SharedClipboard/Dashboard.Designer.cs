@@ -51,6 +51,8 @@
             this.pbSharedClipboardImage = new System.Windows.Forms.PictureBox();
             this.label7 = new System.Windows.Forms.Label();
             this.tbSharedClipboardText = new System.Windows.Forms.TextBox();
+            this.lbLocalName = new System.Windows.Forms.Label();
+            this.lbSharedName = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbLocalClipboardImage)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.pbSharedClipboardImage)).BeginInit();
             this.SuspendLayout();
@@ -280,11 +282,29 @@
             this.tbSharedClipboardText.Size = new System.Drawing.Size(162, 162);
             this.tbSharedClipboardText.TabIndex = 16;
             // 
+            // lbLocalName
+            // 
+            this.lbLocalName.AutoSize = true;
+            this.lbLocalName.Location = new System.Drawing.Point(143, 109);
+            this.lbLocalName.Name = "lbLocalName";
+            this.lbLocalName.Size = new System.Drawing.Size(0, 13);
+            this.lbLocalName.TabIndex = 23;
+            // 
+            // lbSharedName
+            // 
+            this.lbSharedName.AutoSize = true;
+            this.lbSharedName.Location = new System.Drawing.Point(156, 344);
+            this.lbSharedName.Name = "lbSharedName";
+            this.lbSharedName.Size = new System.Drawing.Size(0, 13);
+            this.lbSharedName.TabIndex = 24;
+            // 
             // Dashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(561, 562);
+            this.Controls.Add(this.lbSharedName);
+            this.Controls.Add(this.lbLocalName);
             this.Controls.Add(this.label4);
             this.Controls.Add(this.label5);
             this.Controls.Add(this.label6);
@@ -344,6 +364,8 @@
         private System.Windows.Forms.PictureBox pbSharedClipboardImage;
         private System.Windows.Forms.Label label7;
         private System.Windows.Forms.TextBox tbSharedClipboardText;
+        private System.Windows.Forms.Label lbLocalName;
+        private System.Windows.Forms.Label lbSharedName;
     }
 }
 

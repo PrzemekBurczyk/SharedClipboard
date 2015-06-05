@@ -40,6 +40,7 @@ namespace SharedClipboard
 
         void Dashboard_Load(object sender, EventArgs e)
         {
+            lbLocalName.Text = Environment.MachineName;
             clipboardManager = new ClipboardManager(this.Handle, clipboardManagerId);
             clipboardManager.ClipboardChanged += new EventHandler(ClipboardChanged);
             clipboardManager.SharedClipboardChanged += new EventHandler<ClipboardData>(SharedClipboardChanged);
@@ -112,8 +113,8 @@ namespace SharedClipboard
             try
             {
                 clipboardManager.PublishClipboard();
-            } 
-            catch(FileUtils.FilesSizeLimitExceededException exception)
+            }
+            catch (FileUtils.FilesSizeLimitExceededException exception)
             {
                 Console.WriteLine(exception.Message);
             }
@@ -258,40 +259,50 @@ namespace SharedClipboard
 
         void SharedClipboardChanged(object sender, ClipboardData clipboardData)
         {
-            if (clipboardData != null)
+            BeginInvoke((MethodInvoker) delegate
             {
-                switch (clipboardData.Type)
+                if (clipboardData != null)
                 {
-                    case ClipboardDataType.TEXT:
-                        string text = clipboardData.Data;
+                    Console.WriteLine("Shared clipboard changed:");
+                    Console.WriteLine("    Id: " + clipboardData.Id);
+                    Console.WriteLine("    Sender: " + clipboardData.Sender);
+                    Console.WriteLine("    Type: " + clipboardData.Type);
 
-                        tbSharedClipboardText.Text = text;
-                        pbSharedClipboardImage.Image = null;
-                        lbSharedClipboardFileDropList.Items.Clear();
-                        break;
-                    case ClipboardDataType.IMAGE:
-                        Image image = ImageUtils.Base64ToImage(clipboardData.Data);
+                    lbSharedName.Text = clipboardData.Sender;
 
-                        tbSharedClipboardText.Text = null;
-                        pbSharedClipboardImage.Image = image;
-                        lbSharedClipboardFileDropList.Items.Clear();
-                        break;
-                    case ClipboardDataType.FILES:
-                        List<ClipboardFile> files = JsonConvert.DeserializeObject<List<ClipboardFile>>(clipboardData.Data);
+                    switch (clipboardData.Type)
+                    {
+                        case ClipboardDataType.TEXT:
+                            string text = clipboardData.Data;
 
-                        tbSharedClipboardText.Text = null;
-                        pbSharedClipboardImage.Image = null;
-                        lbSharedClipboardFileDropList.Items.Clear();
-                        foreach(ClipboardFile clipboardFile in files)
-                        {
-                            lbSharedClipboardFileDropList.Items.Add(clipboardFile.Name);
-                        }
-                        break;
-                    default:
-                        Console.WriteLine("Unknown clipboard data type");
-                        break;
+                            tbSharedClipboardText.Text = text;
+                            pbSharedClipboardImage.Image = null;
+                            lbSharedClipboardFileDropList.Items.Clear();
+                            break;
+                        case ClipboardDataType.IMAGE:
+                            Image image = ImageUtils.Base64ToImage(clipboardData.Data);
+
+                            tbSharedClipboardText.Text = null;
+                            pbSharedClipboardImage.Image = image;
+                            lbSharedClipboardFileDropList.Items.Clear();
+                            break;
+                        case ClipboardDataType.FILES:
+                            List<ClipboardFile> files = JsonConvert.DeserializeObject<List<ClipboardFile>>(clipboardData.Data);
+
+                            tbSharedClipboardText.Text = null;
+                            pbSharedClipboardImage.Image = null;
+                            lbSharedClipboardFileDropList.Items.Clear();
+                            foreach (ClipboardFile clipboardFile in files)
+                            {
+                                lbSharedClipboardFileDropList.Items.Add(clipboardFile.Name);
+                            }
+                            break;
+                        default:
+                            Console.WriteLine("Unknown clipboard data type");
+                            break;
+                    }
                 }
-            }
+            }, null);
         }
 
         /// <summary>

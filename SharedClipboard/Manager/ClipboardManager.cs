@@ -11,6 +11,7 @@ using Quobject.SocketIoClientDotNet.Client;
 using Newtonsoft.Json;
 using SharedClipboard.Utils;
 using System.IO;
+using Newtonsoft.Json.Linq;
 
 namespace SharedClipboard.Manager
 {
@@ -79,7 +80,7 @@ namespace SharedClipboard.Manager
 
         public Socket socket = null;
 
-        private Dictionary<string, ClipboardData> sharedClipboard;
+        private Dictionary<string, ClipboardData> sharedClipboard = new Dictionary<string,ClipboardData>();
 
         public ClipboardManager(IntPtr handle, int id)
         {
@@ -102,13 +103,36 @@ namespace SharedClipboard.Manager
                 Console.WriteLine("Connected to server.");
             });
 
+            socket.On(Socket.EVENT_CONNECT_ERROR, () =>
+            {
+                Console.WriteLine("Connect error.");
+            });
+
+            socket.On(Socket.EVENT_CONNECT_TIMEOUT, () =>
+            {
+                Console.WriteLine("Connect timeout.");
+            });
+
+            socket.On(Socket.EVENT_DISCONNECT, () =>
+            {
+                Console.WriteLine("Disconnect.");
+            });
+
+            socket.On(Socket.EVENT_RECONNECTING, () =>
+            {
+                Console.WriteLine("Reconnecting.");
+            });
+
             socket.On(Events.CLIPBOARD_CHANGE, (data) =>
             {
-                ClipboardData clipboardData = JsonConvert.DeserializeObject<ClipboardData>((string)data);
-                sharedClipboard.Add(clipboardData.Id, clipboardData);
-                if (SharedClipboardChanged != null)
+                ClipboardData clipboardData = JsonConvert.DeserializeObject<ClipboardData>(data.ToString());
+                if (clipboardData != null)
                 {
-                    SharedClipboardChanged(this, clipboardData);
+                    sharedClipboard[clipboardData.Id] = clipboardData;
+                    if (SharedClipboardChanged != null)
+                    {
+                        SharedClipboardChanged(this, clipboardData);
+                    }
                 }
             });
         }
@@ -159,6 +183,7 @@ namespace SharedClipboard.Manager
         {
             bool emitEvent = false;
             ClipboardData clipboardData = new ClipboardData();
+            clipboardData.Sender = Environment.MachineName;
 
             if (Clipboard.ContainsText())
             {

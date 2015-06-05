@@ -16,7 +16,7 @@ namespace SharedClipboard.Utils
             using (MemoryStream ms = new MemoryStream())
             {
                 // Convert Image to byte[]
-                image.Save(ms, image.RawFormat);
+                image.Save(ms, ImageFormat.Png);
                 byte[] imageBytes = ms.ToArray();
 
                 // Convert byte[] to Base64 String

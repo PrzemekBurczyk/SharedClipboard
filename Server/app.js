@@ -27,13 +27,15 @@ var isNotEmpty = function (object) {
 io.on(EVENTS.CONNECTION, function (socket) {
     console.log('New user connected');
     
-    socket.on(EVENTS.CLIPBOARD_CHANGE, function (clipboardData) {
+    socket.on(EVENTS.CLIPBOARD_CHANGE, function (data) {
+        var clipboardData = JSON.parse(data);
         if (isNotEmpty(clipboardData.Id) && isNotEmpty(clipboardData.Sender) && isNotEmpty(clipboardData.Type) && isNotEmpty(clipboardData.Data)) {
-            console.log('Clipboard changed:\n    Id: ' + clipboardData.Id + '\n    Sender: ' + clipboardData.Sender + '\n    Type: ' + clipboardData.Type + '\n    Data: ' + clipboardData.Data);
+            console.log('Clipboard changed:\n    Id: ' + clipboardData.Id + '\n    Sender: ' + clipboardData.Sender + '\n    Type: ' + clipboardData.Type);
             clipboard[clipboardData.Id] = clipboardData;
-            socket.broadcast.emit(EVENTS.CLIPBOARD_CHANGE, clipboardData);
+            //socket.broadcast.emit(EVENTS.CLIPBOARD_CHANGE, clipboardData);  //sends to all without sender
+            io.sockets.emit(EVENTS.CLIPBOARD_CHANGE, clipboardData);  //sends to all including sender
         } else {
-            console.log('Clipboard changed, but with incomplete data');
+            console.log('Clipboard changed, but with incomplete data\n    Id: ' + clipboardData.Id + '\n    Sender: ' + clipboardData.Sender + '\n    Type: ' + clipboardData.Type + '\n    Data: ' + clipboardData.Data);
         }
     });
     
