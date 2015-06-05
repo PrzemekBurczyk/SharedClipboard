@@ -1,4 +1,5 @@
-﻿using SharedClipboard.Manager;
+﻿using Newtonsoft.Json;
+using SharedClipboard.Manager;
 using SharedClipboard.Utils;
 using System;
 using System.Collections.Generic;
@@ -108,7 +109,14 @@ namespace SharedClipboard
         void CopyHotKeyPressed(object sender, EventArgs e)
         {
             Console.WriteLine("COPY");
-            clipboardManager.PublishClipboard();
+            try
+            {
+                clipboardManager.PublishClipboard();
+            } 
+            catch(FileUtils.FilesSizeLimitExceededException exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
         }
 
 
@@ -269,14 +277,15 @@ namespace SharedClipboard
                         lbSharedClipboardFileDropList.Items.Clear();
                         break;
                     case ClipboardDataType.FILES:
+                        List<ClipboardFile> files = JsonConvert.DeserializeObject<List<ClipboardFile>>(clipboardData.Data);
+
                         tbSharedClipboardText.Text = null;
                         pbSharedClipboardImage.Image = null;
                         lbSharedClipboardFileDropList.Items.Clear();
-                        //StringCollection filePaths = Clipboard.GetFileDropList();
-                        //foreach (string filePath in filePaths)
-                        //{
-                        //    lbSharedClipboardFileDropList.Items.Add(filePath);
-                        //}
+                        foreach(ClipboardFile clipboardFile in files)
+                        {
+                            lbSharedClipboardFileDropList.Items.Add(clipboardFile.Name);
+                        }
                         break;
                     default:
                         Console.WriteLine("Unknown clipboard data type");

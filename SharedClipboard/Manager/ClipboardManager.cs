@@ -24,6 +24,8 @@ namespace SharedClipboard.Manager
             public static string GET_ALL_CLIPBOARDS = "get_all_clipboards";
         }
 
+        private static long MAX_IMAGE_SIZE_BYTES = 5242880; //5MB
+
         private static IntPtr HWND_MESSAGE = new IntPtr(-3);
 
         /// <summary>
@@ -146,8 +148,6 @@ namespace SharedClipboard.Manager
         {
             if (m.Msg == WM_CLIPBOARDUPDATE)
             {
-                //PublishClipboard();
-
                 if (ClipboardChanged != null)
                 {
                     ClipboardChanged(this, EventArgs.Empty);
@@ -183,9 +183,9 @@ namespace SharedClipboard.Manager
             else if (Clipboard.ContainsFileDropList())
             {
                 StringCollection filePaths = Clipboard.GetFileDropList();
-                
+                List<ClipboardFile> files = FileUtils.GetFilesFromPaths(filePaths);
 
-                //clipboardData.Data = text;
+                clipboardData.Data = JsonConvert.SerializeObject(files);
                 clipboardData.Type = ClipboardDataType.FILES;
                 clipboardData.Id = "1";
 
@@ -214,6 +214,7 @@ namespace SharedClipboard.Manager
                         Clipboard.SetImage(ImageUtils.Base64ToImage(clipboardData.Data));
                         break;
                     case ClipboardDataType.FILES:
+                        List<ClipboardFile> files = JsonConvert.DeserializeObject<List<ClipboardFile>>(clipboardData.Data);
                         break;
                     default:
                         Console.WriteLine("Unknown clipboard data type");
