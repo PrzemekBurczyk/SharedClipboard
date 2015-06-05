@@ -10,6 +10,7 @@ using System.Collections.Specialized;
 using Quobject.SocketIoClientDotNet.Client;
 using Newtonsoft.Json;
 using SharedClipboard.Utils;
+using System.IO;
 
 namespace SharedClipboard.Manager
 {
@@ -184,6 +185,8 @@ namespace SharedClipboard.Manager
                 StringCollection filePaths = Clipboard.GetFileDropList();
                 foreach (string filePath in filePaths)
                 {
+                    //File.Exists(filePath);
+                    //File.GetAttributes(filePath)
                     Console.WriteLine(filePath);
                 }
 

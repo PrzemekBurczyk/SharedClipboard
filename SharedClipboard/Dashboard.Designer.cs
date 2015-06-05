@@ -112,6 +112,7 @@
             this.tbLocalClipboardText.Multiline = true;
             this.tbLocalClipboardText.Name = "tbLocalClipboardText";
             this.tbLocalClipboardText.ReadOnly = true;
+            this.tbLocalClipboardText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.tbLocalClipboardText.Size = new System.Drawing.Size(162, 162);
             this.tbLocalClipboardText.TabIndex = 5;
             // 
@@ -127,6 +128,7 @@
             // 
             // pbLocalClipboardImage
             // 
+            this.pbLocalClipboardImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pbLocalClipboardImage.Location = new System.Drawing.Point(198, 149);
             this.pbLocalClipboardImage.Name = "pbLocalClipboardImage";
             this.pbLocalClipboardImage.Size = new System.Drawing.Size(162, 162);
@@ -137,6 +139,7 @@
             // lbLocalClipboardFileDropList
             // 
             this.lbLocalClipboardFileDropList.FormattingEnabled = true;
+            this.lbLocalClipboardFileDropList.HorizontalScrollbar = true;
             this.lbLocalClipboardFileDropList.Location = new System.Drawing.Point(383, 149);
             this.lbLocalClipboardFileDropList.Name = "lbLocalClipboardFileDropList";
             this.lbLocalClipboardFileDropList.SelectionMode = System.Windows.Forms.SelectionMode.None;
@@ -240,6 +243,7 @@
             // lbSharedClipboardFileDropList
             // 
             this.lbSharedClipboardFileDropList.FormattingEnabled = true;
+            this.lbSharedClipboardFileDropList.HorizontalScrollbar = true;
             this.lbSharedClipboardFileDropList.Location = new System.Drawing.Point(383, 384);
             this.lbSharedClipboardFileDropList.Name = "lbSharedClipboardFileDropList";
             this.lbSharedClipboardFileDropList.SelectionMode = System.Windows.Forms.SelectionMode.None;
@@ -248,6 +252,7 @@
             // 
             // pbSharedClipboardImage
             // 
+            this.pbSharedClipboardImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pbSharedClipboardImage.Location = new System.Drawing.Point(198, 384);
             this.pbSharedClipboardImage.Name = "pbSharedClipboardImage";
             this.pbSharedClipboardImage.Size = new System.Drawing.Size(162, 162);
@@ -271,6 +276,7 @@
             this.tbSharedClipboardText.Multiline = true;
             this.tbSharedClipboardText.Name = "tbSharedClipboardText";
             this.tbSharedClipboardText.ReadOnly = true;
+            this.tbSharedClipboardText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.tbSharedClipboardText.Size = new System.Drawing.Size(162, 162);
             this.tbSharedClipboardText.TabIndex = 16;
             // 
