@@ -16,7 +16,7 @@ namespace SharedClipboard.Utils
             public FilesSizeLimitExceededException(string message) : base(message) { }
         }
 
-        private static long MAX_FILES_SIZE_BYTES = 5242880; //5MB
+        public static long MAX_FILES_SIZE_BYTES = 5242880; //5MB
 
         private static long GetPathsSize(List<string> paths)
         {

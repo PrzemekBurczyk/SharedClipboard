@@ -16,6 +16,8 @@ namespace SharedClipboard
 {
     public partial class Dashboard : Form
     {
+        private const int baloonTipTime = 1000;
+
         private const int copyHotKeyRegisterId = 100;
         private HotKeyRegister copyHotKeyToRegister = null;
 
@@ -31,11 +33,46 @@ namespace SharedClipboard
         KeyModifiers copyRegisterModifiers = KeyModifiers.None;
         KeyModifiers pasteRegisterModifiers = KeyModifiers.None;
 
+        private NotifyIcon trayIcon;
+        private ContextMenu trayMenu;
+
         public Dashboard()
         {
             InitializeComponent();
 
+            trayMenu = new ContextMenu();
+            trayMenu.MenuItems.Add("Open", OnOpen);
+            trayMenu.MenuItems.Add("Exit", OnExit);
+
+            trayIcon = new NotifyIcon();
+            trayIcon.Text = "Shared Clipboard";
+            trayIcon.Icon = new Icon(SystemIcons.Application, 40, 40);
+            trayIcon.Click += OnOpen;
+
+            trayIcon.ContextMenu = trayMenu;
+            trayIcon.Visible = true;
+
             Load += Dashboard_Load;
+            Resize += Dashboard_Resize;
+        }
+
+        private void OnExit(object sender, EventArgs e)
+        {
+            Application.Exit();
+        }
+
+        private void Dashboard_Resize(object sender, EventArgs e)
+        {
+            if (WindowState == FormWindowState.Minimized)
+            {
+                this.Hide(); 
+            }
+        }
+
+        private void OnOpen(object sender, EventArgs e)
+        {
+            this.Show();
+            this.WindowState = FormWindowState.Normal;
         }
 
         void Dashboard_Load(object sender, EventArgs e)
@@ -49,7 +86,29 @@ namespace SharedClipboard
 
         private void OnClipboardError(object sender, ClipboardError clipboardError)
         {
-
+            switch(clipboardError.Reason)
+            {
+                case ErrorReason.TIMEOUT:
+                    trayIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Error;
+                    trayIcon.BalloonTipText = "Wasn't able to upload clipboard. Connection too slow.";
+                    trayIcon.BalloonTipTitle = "Clipboard synchronization timeout";
+                    trayIcon.ShowBalloonTip(baloonTipTime);
+                    break;
+                case ErrorReason.LOCKED:
+                    trayIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Warning;
+                    trayIcon.BalloonTipText = "Someone is uploading to this clipboard at the moment.";
+                    trayIcon.BalloonTipTitle = "Selected clipboard is locked";
+                    trayIcon.ShowBalloonTip(baloonTipTime);
+                    break;
+                case ErrorReason.NOT_REQUESTED:
+                    trayIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Error;
+                    trayIcon.BalloonTipText = "Problem occured while uploading clipboard.";
+                    trayIcon.BalloonTipTitle = "Application error";
+                    trayIcon.ShowBalloonTip(baloonTipTime);
+                    break;
+                default:
+                    break;
+            }
         }
 
         /// <summary>
@@ -122,14 +181,26 @@ namespace SharedClipboard
             catch (FileUtils.FilesSizeLimitExceededException exception)
             {
                 Console.WriteLine(exception.Message);
+                trayIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+                trayIcon.BalloonTipText = "Cannot upload files of total size greater than " + FileUtils.MAX_FILES_SIZE_BYTES + " bytes.";
+                trayIcon.BalloonTipTitle = "Clipboard too big";
+                trayIcon.ShowBalloonTip(baloonTipTime);
             }
             catch (PreviousChangeUnfinishedException exception)
             {
                 Console.WriteLine(exception.Message);
+                trayIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+                trayIcon.BalloonTipText = "You are already uploading data to selected clipboard.";
+                trayIcon.BalloonTipTitle = "Clipboard already in use";
+                trayIcon.ShowBalloonTip(baloonTipTime);
             }
             catch (UnknownClipboardTypeException exception)
             {
                 Console.WriteLine(exception.Message);
+                trayIcon.BalloonTipIcon = System.Windows.Forms.ToolTipIcon.Info;
+                trayIcon.BalloonTipText = "Cannot upload clipboard of this type.";
+                trayIcon.BalloonTipTitle = "Clipboard type unknown";
+                trayIcon.ShowBalloonTip(baloonTipTime);
             }
         }
 
@@ -323,6 +394,7 @@ namespace SharedClipboard
         /// </summary>
         protected override void OnClosed(EventArgs e)
         {
+            Console.WriteLine("Closing.");
             if (copyHotKeyToRegister != null)
             {
                 copyHotKeyToRegister.Dispose();
@@ -339,6 +411,12 @@ namespace SharedClipboard
             {
                 clipboardManager.Dispose();
                 clipboardManager = null;
+            }
+
+            if(trayIcon != null)
+            {
+                trayIcon.Dispose();
+                trayIcon = null;
             }
 
             base.OnClosed(e);

@@ -52,7 +52,7 @@ io.on(EVENTS.CONNECTION, function (socket) {
                 //socket.broadcast.emit(EVENTS.CLIPBOARD_CHANGE, clipboardData);  //sends to all without sender
                 io.sockets.emit(EVENTS.CLIPBOARD_CHANGE, clipboardData);  //sends to all including sender
                 socket.emit(EVENTS.CHANGE_RECEIVED, clipboardData.Id);
-                requestedChanges[id] = undefined;
+                requestedChanges[clipboardData.Id] = undefined;
             } else {
                 socket.emit(EVENTS.CHANGE_ERROR, { Id: clipboardData.Id, Reason: ERRORS.NOT_REQUESTED });
             }
@@ -70,7 +70,7 @@ io.on(EVENTS.CONNECTION, function (socket) {
                 socket.emit(EVENTS.CHANGE_ERROR, { Id: id, Reason: ERRORS.TIMEOUT });
             }, CHANGE_TIMEOUT_MS);
         } else {
-            socket.on(EVENTS.CHANGE_ERROR, { Id: id, Reason: ERRORS.LOCKED });
+            socket.emit(EVENTS.CHANGE_ERROR, { Id: id, Reason: ERRORS.LOCKED });
         }
     });
     

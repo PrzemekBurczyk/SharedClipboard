@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace SharedClipboard.Manager
 {
-    public class ErrorReason
+    public static class ErrorReason
     {
         public const string LOCKED = "locked";
         public const string TIMEOUT = "timeout";
