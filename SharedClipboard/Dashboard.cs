@@ -117,9 +117,17 @@ namespace SharedClipboard
             Console.WriteLine("COPY");
             try
             {
-                clipboardManager.PublishClipboard();
+                clipboardManager.PublishClipboard("1");
             }
             catch (FileUtils.FilesSizeLimitExceededException exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
+            catch (PreviousChangeUnfinishedException exception)
+            {
+                Console.WriteLine(exception.Message);
+            }
+            catch (UnknownClipboardTypeException exception)
             {
                 Console.WriteLine(exception.Message);
             }

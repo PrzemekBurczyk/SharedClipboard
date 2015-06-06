@@ -8,9 +8,9 @@ namespace SharedClipboard.Manager
 {
     public class ErrorReason
     {
-        public static const string LOCKED = "locked";
-        public static const string TIMEOUT = "timeout";
-        public static const string NOT_REQUESTED = "not_requested";
+        public const string LOCKED = "locked";
+        public const string TIMEOUT = "timeout";
+        public const string NOT_REQUESTED = "not_requested";
     }
 
     public class ClipboardError

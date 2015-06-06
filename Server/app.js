@@ -10,7 +10,6 @@ var EVENTS = {
     DISCONNECT: 'disconnect',
     BEGIN_CHANGE: 'begin_change',
     CLIPBOARD_CHANGE: 'clipboard_change',
-    FINISH_CHANGE: 'finish_change',
     CHANGE_RECEIVED: 'change_received',
     CHANGE_ACCEPT: 'change_accept',
     CHANGE_ERROR: 'change_error',
@@ -41,15 +40,19 @@ var isNotEmpty = function (object) {
 io.on(EVENTS.CONNECTION, function (socket) {
     console.log('New user connected');
     
+    var changeTimeout;
+    
     socket.on(EVENTS.CLIPBOARD_CHANGE, function (data) {
         var clipboardData = JSON.parse(data);
         if (isNotEmpty(clipboardData.Id) && isNotEmpty(clipboardData.Sender) && isNotEmpty(clipboardData.Type) && isNotEmpty(clipboardData.Data)) {
             if (requestedChanges[clipboardData.Id] === socket) {
+                clearTimeout(changeTimeout);
                 console.log('Clipboard changed:\n    Id: ' + clipboardData.Id + '\n    Sender: ' + clipboardData.Sender + '\n    Type: ' + clipboardData.Type);
                 clipboard[clipboardData.Id] = clipboardData;
                 //socket.broadcast.emit(EVENTS.CLIPBOARD_CHANGE, clipboardData);  //sends to all without sender
                 io.sockets.emit(EVENTS.CLIPBOARD_CHANGE, clipboardData);  //sends to all including sender
                 socket.emit(EVENTS.CHANGE_RECEIVED, clipboardData.Id);
+                requestedChanges[id] = undefined;
             } else {
                 socket.emit(EVENTS.CHANGE_ERROR, { Id: clipboardData.Id, Reason: ERRORS.NOT_REQUESTED });
             }
@@ -61,17 +64,14 @@ io.on(EVENTS.CONNECTION, function (socket) {
     socket.on(EVENTS.BEGIN_CHANGE, function (id) {
         if (requestedChanges[id] === undefined) {
             requestedChanges[id] = socket;
-            setTimeout(function () {
+            socket.emit(EVENTS.CHANGE_ACCEPT, id);
+            changeTimeout = setTimeout(function () {
                 requestedChanges[id] = undefined;
                 socket.emit(EVENTS.CHANGE_ERROR, { Id: id, Reason: ERRORS.TIMEOUT });
             }, CHANGE_TIMEOUT_MS);
         } else {
             socket.on(EVENTS.CHANGE_ERROR, { Id: id, Reason: ERRORS.LOCKED });
         }
-    });
-    
-    socket.on(EVENTS.FINISH_CHANGE, function (id) {
-        requestedChanges[id] = undefined;
     });
     
     socket.on(EVENTS.GET_CLIPBOARD_BY_ID, function (id) {

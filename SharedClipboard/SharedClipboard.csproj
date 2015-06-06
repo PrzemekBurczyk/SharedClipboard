@@ -60,7 +60,6 @@
   <ItemGroup>
     <Compile Include="Manager\ClipboardData.cs" />
     <Compile Include="Manager\ClipboardError.cs" />
-    <Compile Include="Manager\ClipboardLockedException.cs" />
     <Compile Include="Manager\ClipboardManager.cs" />
     <Compile Include="Dashboard.cs">
       <SubType>Form</SubType>

@@ -20,15 +20,15 @@ namespace SharedClipboard.Manager
     {
         private class Events
         {
-            public static const string CLIPBOARD_CHANGE = "clipboard_change";
-            public static const string GET_CLIPBOARD_BY_ID = "get_clipboard_by_id";
-            public static const string ALL_CLIPBOARDS = "all_clipboards";
-            public static const string GET_ALL_CLIPBOARDS = "get_all_clipboards";
-            public static const string BEGIN_CHANGE = "begin_change";
-            public static const string FINISH_CHANGE = "finish_change";
-            public static const string CHANGE_RECEIVED = "change_received";
-            public static const string CHANGE_ACCEPT = "change_accept";
-            public static const string CHANGE_ERROR = "change_error";
+            public const string CLIPBOARD_CHANGE = "clipboard_change";
+            public const string GET_CLIPBOARD_BY_ID = "get_clipboard_by_id";
+            public const string ALL_CLIPBOARDS = "all_clipboards";
+            public const string GET_ALL_CLIPBOARDS = "get_all_clipboards";
+            public const string BEGIN_CHANGE = "begin_change";
+            public const string FINISH_CHANGE = "finish_change";
+            public const string CHANGE_RECEIVED = "change_received";
+            public const string CHANGE_ACCEPT = "change_accept";
+            public const string CHANGE_ERROR = "change_error";
         }
 
         private static long MAX_IMAGE_SIZE_BYTES = 5242880; //5MB
@@ -148,21 +148,23 @@ namespace SharedClipboard.Manager
 
             socket.On(Events.CHANGE_ACCEPT, (clipboardId) =>
             {
+                Console.WriteLine("CHANGE_ACCEPT " + clipboardId);
                 ClipboardData clipboardData = requestedChanges[clipboardId.ToString()];
                 socket.Emit(Events.CLIPBOARD_CHANGE, JsonConvert.SerializeObject(clipboardData));
             });
 
             socket.On(Events.CHANGE_RECEIVED, (clipboardId) =>
             {
+                Console.WriteLine("CHANGE_RECEIVED " + clipboardId);
                 requestedChanges.Remove(clipboardId.ToString());
-                socket.Emit(Events.FINISH_CHANGE, clipboardId.ToString());
             });
 
             socket.On(Events.CHANGE_ERROR, (error) =>
             {
                 ClipboardError clipboardError = JsonConvert.DeserializeObject<ClipboardError>(error.ToString());
+                Console.WriteLine("CHANGE_ERROR " + clipboardError.Id + ": " + clipboardError.Reason);
                 requestedChanges.Remove(clipboardError.Id);
-                if(ClipboardError != null)
+                if (ClipboardError != null)
                 {
                     ClipboardError(this, clipboardError);
                 }
@@ -251,6 +253,11 @@ namespace SharedClipboard.Manager
 
             requestedChanges[clipboardData.Id] = clipboardData;
             socket.Emit(Events.BEGIN_CHANGE, clipboardData.Id);
+
+            //System.Threading.Timer updateTimer = new System.Threading.Timer((object state) =>
+            //{
+
+            //}, null, TimeSpan.FromMilliseconds(10000), TimeSpan.FromMilliseconds(-1));
         }
 
         internal void CopySharedToLocal()
