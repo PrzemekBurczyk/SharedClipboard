@@ -105,7 +105,8 @@ namespace SharedClipboard.Manager
 
         private void InitializeServerConnection()
         {
-            socket = IO.Socket("http://127.0.0.1:3000");
+            //socket = IO.Socket("http://127.0.0.1:3000");
+            socket = IO.Socket("http://shared-clipboard.herokuapp.com");
             Console.WriteLine("Connecting to server...");
 
             socket.On(Socket.EVENT_CONNECT, () =>
