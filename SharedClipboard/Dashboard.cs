@@ -42,10 +42,15 @@ namespace SharedClipboard
         {
             lbLocalName.Text = Environment.MachineName;
             clipboardManager = new ClipboardManager(this.Handle, clipboardManagerId);
-            clipboardManager.ClipboardChanged += new EventHandler(ClipboardChanged);
-            clipboardManager.SharedClipboardChanged += new EventHandler<ClipboardData>(SharedClipboardChanged);
+            clipboardManager.ClipboardChanged += new EventHandler(OnClipboardChanged);
+            clipboardManager.SharedClipboardChanged += new EventHandler<ClipboardData>(OnSharedClipboardChanged);
+            clipboardManager.ClipboardError += new EventHandler<ClipboardError>(OnClipboardError);
         }
 
+        private void OnClipboardError(object sender, ClipboardError clipboardError)
+        {
+
+        }
 
         /// <summary>
         /// Handle the KeyDown of tbHotKey. In this event handler, check the pressed keys.
@@ -220,7 +225,7 @@ namespace SharedClipboard
             }
         }
 
-        void ClipboardChanged(object sender, EventArgs e)
+        void OnClipboardChanged(object sender, EventArgs e)
         {
             //if (this.WindowState == FormWindowState.Minimized)
             //{
@@ -257,7 +262,7 @@ namespace SharedClipboard
             }
         }
 
-        void SharedClipboardChanged(object sender, ClipboardData clipboardData)
+        void OnSharedClipboardChanged(object sender, ClipboardData clipboardData)
         {
             BeginInvoke((MethodInvoker) delegate
             {

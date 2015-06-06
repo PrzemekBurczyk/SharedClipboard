@@ -12,6 +12,7 @@ using Newtonsoft.Json;
 using SharedClipboard.Utils;
 using System.IO;
 using Newtonsoft.Json.Linq;
+using System.Diagnostics;
 
 namespace SharedClipboard.Manager
 {
@@ -19,10 +20,15 @@ namespace SharedClipboard.Manager
     {
         private class Events
         {
-            public static string CLIPBOARD_CHANGE = "clipboard_change";
-            public static string GET_CLIPBOARD_BY_ID = "get_clipboard_by_id";
-            public static string ALL_CLIPBOARDS = "all_clipboards";
-            public static string GET_ALL_CLIPBOARDS = "get_all_clipboards";
+            public static const string CLIPBOARD_CHANGE = "clipboard_change";
+            public static const string GET_CLIPBOARD_BY_ID = "get_clipboard_by_id";
+            public static const string ALL_CLIPBOARDS = "all_clipboards";
+            public static const string GET_ALL_CLIPBOARDS = "get_all_clipboards";
+            public static const string BEGIN_CHANGE = "begin_change";
+            public static const string FINISH_CHANGE = "finish_change";
+            public static const string CHANGE_RECEIVED = "change_received";
+            public static const string CHANGE_ACCEPT = "change_accept";
+            public static const string CHANGE_ERROR = "change_error";
         }
 
         private static long MAX_IMAGE_SIZE_BYTES = 5242880; //5MB
@@ -78,9 +84,13 @@ namespace SharedClipboard.Manager
 
         public event EventHandler<ClipboardData> SharedClipboardChanged;
 
+        public event EventHandler<ClipboardError> ClipboardError;
+
         public Socket socket = null;
 
-        private Dictionary<string, ClipboardData> sharedClipboard = new Dictionary<string,ClipboardData>();
+        private Dictionary<string, ClipboardData> sharedClipboard = new Dictionary<string, ClipboardData>();
+
+        private Dictionary<string, ClipboardData> requestedChanges = new Dictionary<string, ClipboardData>();
 
         public ClipboardManager(IntPtr handle, int id)
         {
@@ -135,6 +145,29 @@ namespace SharedClipboard.Manager
                     }
                 }
             });
+
+            socket.On(Events.CHANGE_ACCEPT, (clipboardId) =>
+            {
+                ClipboardData clipboardData = requestedChanges[clipboardId.ToString()];
+                socket.Emit(Events.CLIPBOARD_CHANGE, JsonConvert.SerializeObject(clipboardData));
+            });
+
+            socket.On(Events.CHANGE_RECEIVED, (clipboardId) =>
+            {
+                requestedChanges.Remove(clipboardId.ToString());
+                socket.Emit(Events.FINISH_CHANGE, clipboardId.ToString());
+            });
+
+            socket.On(Events.CHANGE_ERROR, (error) =>
+            {
+                ClipboardError clipboardError = JsonConvert.DeserializeObject<ClipboardError>(error.ToString());
+                requestedChanges.Remove(clipboardError.Id);
+                if(ClipboardError != null)
+                {
+                    ClipboardError(this, clipboardError);
+                }
+            });
+
         }
 
         public void Dispose()
@@ -179,11 +212,15 @@ namespace SharedClipboard.Manager
             }
         }
 
-        internal void PublishClipboard()
+        internal void PublishClipboard(string clipboardId)
         {
-            bool emitEvent = false;
+            if (requestedChanges.ContainsKey(clipboardId))
+            {
+                throw new PreviousChangeUnfinishedException("You cannot perform concurrent clipboard publishing");
+            }
             ClipboardData clipboardData = new ClipboardData();
             clipboardData.Sender = Environment.MachineName;
+            clipboardData.Id = clipboardId;
 
             if (Clipboard.ContainsText())
             {
@@ -191,9 +228,6 @@ namespace SharedClipboard.Manager
 
                 clipboardData.Data = text;
                 clipboardData.Type = ClipboardDataType.TEXT;
-                clipboardData.Id = "1";
-
-                emitEvent = true;
             }
             else if (Clipboard.ContainsImage())
             {
@@ -201,9 +235,6 @@ namespace SharedClipboard.Manager
 
                 clipboardData.Data = ImageUtils.ImageToBase64(image);
                 clipboardData.Type = ClipboardDataType.IMAGE;
-                clipboardData.Id = "1";
-
-                emitEvent = true;
             }
             else if (Clipboard.ContainsFileDropList())
             {
@@ -212,15 +243,14 @@ namespace SharedClipboard.Manager
 
                 clipboardData.Data = JsonConvert.SerializeObject(files);
                 clipboardData.Type = ClipboardDataType.FILES;
-                clipboardData.Id = "1";
-
-                emitEvent = true;
             }
-
-            if (emitEvent)
+            else
             {
-                socket.Emit(Events.CLIPBOARD_CHANGE, JsonConvert.SerializeObject(clipboardData));
+                throw new UnknownClipboardTypeException("Handled types are: text, image, file");
             }
+
+            requestedChanges[clipboardData.Id] = clipboardData;
+            socket.Emit(Events.BEGIN_CHANGE, clipboardData.Id);
         }
 
         internal void CopySharedToLocal()
@@ -241,7 +271,7 @@ namespace SharedClipboard.Manager
                     case ClipboardDataType.FILES:
                         StringCollection filePaths = new StringCollection();
                         List<ClipboardFile> files = JsonConvert.DeserializeObject<List<ClipboardFile>>(clipboardData.Data);
-                        foreach(ClipboardFile clipboardFile in files)
+                        foreach (ClipboardFile clipboardFile in files)
                         {
                             string path = FileUtils.CreateTemporaryFile(clipboardFile.Name, clipboardFile.Data);
                             if (path != null)
