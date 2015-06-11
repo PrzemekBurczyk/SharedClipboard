@@ -151,7 +151,7 @@ namespace SharedClipboard
         /// <summary>
         /// Raise an event when the hotkey is pressed.
         /// </summary>
-        public event EventHandler HotKeyPressed;
+        public event EventHandler<int> HotKeyPressed;
 
 
         public HotKeyRegister(IntPtr handle, int id, KeyModifiers modifiers, Keys key)
@@ -215,7 +215,7 @@ namespace SharedClipboard
                 && HotKeyPressed != null)
             {
                 // Raise the HotKeyPressed event if it is an WM_HOTKEY message.
-                HotKeyPressed(this, EventArgs.Empty);
+                HotKeyPressed(this, ID);
 
                 // True to filter the message and stop it from being dispatched.
                 return true;

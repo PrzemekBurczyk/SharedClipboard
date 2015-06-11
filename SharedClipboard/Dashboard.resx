@@ -117,4 +117,7 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
+  <data name="lbNotice.Text" xml:space="preserve">
+    <value>Please click the textbox and press keys.  The keys must be in combination with the Ctrl, Shift or Alt (e.g. Ctrl+Alt+T). Three consecutive keys will be assigned as hotkeys (with modifiers) for corresponding clipboard slots.</value>
+  </data>
 </root>

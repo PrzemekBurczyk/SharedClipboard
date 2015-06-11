@@ -18,13 +18,29 @@ namespace SharedClipboard
     {
         private const int baloonTipTime = 1000;
 
-        private const int copyHotKeyRegisterId = 100;
-        private HotKeyRegister copyHotKeyToRegister = null;
 
-        private const int pasteHotKeyRegisterId = 101;
-        private HotKeyRegister pasteHotKeyToRegister = null;
+        private const int copyHotKeyRegisterId1 = 101;
+        private HotKeyRegister copyHotKeyToRegister1 = null;
 
-        private const int clipboardManagerId = 102;
+        private const int pasteHotKeyRegisterId1 = 102;
+        private HotKeyRegister pasteHotKeyToRegister1 = null;
+
+
+        private const int copyHotKeyRegisterId2 = 103;
+        private HotKeyRegister copyHotKeyToRegister2 = null;
+
+        private const int pasteHotKeyRegisterId2 = 104;
+        private HotKeyRegister pasteHotKeyToRegister2 = null;
+
+
+        private const int copyHotKeyRegisterId3 = 105;
+        private HotKeyRegister copyHotKeyToRegister3 = null;
+
+        private const int pasteHotKeyRegisterId3 = 106;
+        private HotKeyRegister pasteHotKeyToRegister3 = null;
+
+
+        private const int clipboardManagerId = 100;
         private ClipboardManager clipboardManager = null;
 
         Keys copyRegisterKey = Keys.None;
@@ -151,10 +167,19 @@ namespace SharedClipboard
             try
             {
                 // Register the hotkey.
-                copyHotKeyToRegister = new HotKeyRegister(this.Handle, copyHotKeyRegisterId, this.copyRegisterModifiers, this.copyRegisterKey);
-
+                copyHotKeyToRegister1 = new HotKeyRegister(this.Handle, copyHotKeyRegisterId1, this.copyRegisterModifiers, this.copyRegisterKey);
                 // Register the HotKeyPressed event.
-                copyHotKeyToRegister.HotKeyPressed += new EventHandler(CopyHotKeyPressed);
+                copyHotKeyToRegister1.HotKeyPressed += new EventHandler<int>(CopyHotKeyPressed);
+
+                // Register the hotkey.
+                copyHotKeyToRegister2 = new HotKeyRegister(this.Handle, copyHotKeyRegisterId2, this.copyRegisterModifiers, this.copyRegisterKey + 1);
+                // Register the HotKeyPressed event.
+                copyHotKeyToRegister2.HotKeyPressed += new EventHandler<int>(CopyHotKeyPressed);
+
+                // Register the hotkey.
+                copyHotKeyToRegister3 = new HotKeyRegister(this.Handle, copyHotKeyRegisterId3, this.copyRegisterModifiers, this.copyRegisterKey + 2);
+                // Register the HotKeyPressed event.
+                copyHotKeyToRegister3.HotKeyPressed += new EventHandler<int>(CopyHotKeyPressed);
 
                 // Update the UI.
                 btnCopyRegister.Enabled = false;
@@ -171,12 +196,12 @@ namespace SharedClipboard
             }
         }
 
-        void CopyHotKeyPressed(object sender, EventArgs e)
+        void CopyHotKeyPressed(object sender, int id)
         {
-            Console.WriteLine("COPY");
+            Console.WriteLine("COPY " + id);
             try
             {
-                clipboardManager.PublishClipboard("1");
+                clipboardManager.PublishClipboard(id.ToString());
             }
             catch (FileUtils.FilesSizeLimitExceededException exception)
             {
@@ -204,17 +229,30 @@ namespace SharedClipboard
             }
         }
 
-
         /// <summary>
         /// Handle the Click event of btnUnregister.
         /// </summary>
         private void btnCopyUnregister_Click(object sender, EventArgs e)
         {
             // Dispose the hotKeyToRegister.
-            if (copyHotKeyToRegister != null)
+            if (copyHotKeyToRegister1 != null)
             {
-                copyHotKeyToRegister.Dispose();
-                copyHotKeyToRegister = null;
+                copyHotKeyToRegister1.Dispose();
+                copyHotKeyToRegister1 = null;
+            }
+
+            // Dispose the hotKeyToRegister.
+            if (copyHotKeyToRegister2 != null)
+            {
+                copyHotKeyToRegister2.Dispose();
+                copyHotKeyToRegister2 = null;
+            }
+
+            // Dispose the hotKeyToRegister.
+            if (copyHotKeyToRegister3 != null)
+            {
+                copyHotKeyToRegister3.Dispose();
+                copyHotKeyToRegister3 = null;
             }
 
             // Update the UI.
@@ -254,10 +292,19 @@ namespace SharedClipboard
             try
             {
                 // Register the hotkey.
-                pasteHotKeyToRegister = new HotKeyRegister(this.Handle, pasteHotKeyRegisterId, this.pasteRegisterModifiers, this.pasteRegisterKey);
-
+                pasteHotKeyToRegister1 = new HotKeyRegister(this.Handle, pasteHotKeyRegisterId1, this.pasteRegisterModifiers, this.pasteRegisterKey);
                 // Register the HotKeyPressed event.
-                pasteHotKeyToRegister.HotKeyPressed += new EventHandler(PasteHotKeyPressed);
+                pasteHotKeyToRegister1.HotKeyPressed += new EventHandler<int>(PasteHotKeyPressed);
+
+                // Register the hotkey.
+                pasteHotKeyToRegister2 = new HotKeyRegister(this.Handle, pasteHotKeyRegisterId2, this.pasteRegisterModifiers, this.pasteRegisterKey + 1);
+                // Register the HotKeyPressed event.
+                pasteHotKeyToRegister2.HotKeyPressed += new EventHandler<int>(PasteHotKeyPressed);
+
+                // Register the hotkey.
+                pasteHotKeyToRegister3 = new HotKeyRegister(this.Handle, pasteHotKeyRegisterId3, this.pasteRegisterModifiers, this.pasteRegisterKey + 2);
+                // Register the HotKeyPressed event.
+                pasteHotKeyToRegister3.HotKeyPressed += new EventHandler<int>(PasteHotKeyPressed);
 
                 // Update the UI.
                 btnPasteRegister.Enabled = false;
@@ -277,10 +324,24 @@ namespace SharedClipboard
         private void btnPasteUnregister_Click(object sender, System.EventArgs e)
         {
             // Dispose the hotKeyToRegister.
-            if (pasteHotKeyToRegister != null)
+            if (pasteHotKeyToRegister1 != null)
             {
-                pasteHotKeyToRegister.Dispose();
-                pasteHotKeyToRegister = null;
+                pasteHotKeyToRegister1.Dispose();
+                pasteHotKeyToRegister1 = null;
+            }
+
+            // Dispose the hotKeyToRegister.
+            if (pasteHotKeyToRegister2 != null)
+            {
+                pasteHotKeyToRegister2.Dispose();
+                pasteHotKeyToRegister2 = null;
+            }
+
+            // Dispose the hotKeyToRegister.
+            if (pasteHotKeyToRegister3 != null)
+            {
+                pasteHotKeyToRegister3.Dispose();
+                pasteHotKeyToRegister3 = null;
             }
 
             // Update the UI.
@@ -289,10 +350,10 @@ namespace SharedClipboard
             btnPasteUnregister.Enabled = false;
         }
 
-        void PasteHotKeyPressed(object sender, EventArgs e)
+        void PasteHotKeyPressed(object sender, int id)
         {
-            Console.WriteLine("PASTE");
-            clipboardManager.CopySharedToLocal();
+            Console.WriteLine("PASTE " + id);
+            clipboardManager.CopySharedToLocal(id);
         }
 
         protected override void WndProc(ref Message m)
@@ -376,62 +437,185 @@ namespace SharedClipboard
                     Console.WriteLine("    Sender: " + clipboardData.Sender);
                     Console.WriteLine("    Type: " + clipboardData.Type);
 
-                    lbShared1Name.Text = clipboardData.Sender;
-
-                    switch (clipboardData.Type)
+                    if (clipboardData.Id == copyHotKeyRegisterId1.ToString())
                     {
-                        case ClipboardDataType.TEXT:
-                            string text = clipboardData.Data;
+                        lbShared1Name.Text = clipboardData.Sender;
 
-                            tbSharedClipboard1Text.Text = text;
-                            tbSharedClipboard1Text.Visible = true;
-                            lbShared1Text.Visible = true;
+                        switch (clipboardData.Type)
+                        {
+                            case ClipboardDataType.TEXT:
+                                string text = clipboardData.Data;
 
-                            pbSharedClipboard1Image.Image = null;
-                            pbSharedClipboard1Image.Visible = false;
-                            lbShared1Image.Visible = false;
+                                tbSharedClipboard1Text.Text = text;
+                                tbSharedClipboard1Text.Visible = true;
+                                lbShared1Text.Visible = true;
 
-                            lbSharedClipboard1FileDropList.Items.Clear();
-                            lbSharedClipboard1FileDropList.Visible = false;
-                            lbShared1Files.Visible = false;
-                            break;
-                        case ClipboardDataType.IMAGE:
-                            Image image = ImageUtils.Base64ToImage(clipboardData.Data);
+                                pbSharedClipboard1Image.Image = null;
+                                pbSharedClipboard1Image.Visible = false;
+                                lbShared1Image.Visible = false;
 
-                            tbSharedClipboard1Text.Text = null;
-                            tbSharedClipboard1Text.Visible = false;
-                            lbShared1Text.Visible = false;
+                                lbSharedClipboard1FileDropList.Items.Clear();
+                                lbSharedClipboard1FileDropList.Visible = false;
+                                lbShared1Files.Visible = false;
+                                break;
+                            case ClipboardDataType.IMAGE:
+                                Image image = ImageUtils.Base64ToImage(clipboardData.Data);
 
-                            pbSharedClipboard1Image.Image = image;
-                            pbSharedClipboard1Image.Visible = true;
-                            lbShared1Image.Visible = true;
+                                tbSharedClipboard1Text.Text = null;
+                                tbSharedClipboard1Text.Visible = false;
+                                lbShared1Text.Visible = false;
 
-                            lbSharedClipboard1FileDropList.Items.Clear();
-                            lbSharedClipboard1FileDropList.Visible = false;
-                            lbShared1Files.Visible = false;
-                            break;
-                        case ClipboardDataType.FILES:
-                            List<ClipboardFile> files = JsonConvert.DeserializeObject<List<ClipboardFile>>(clipboardData.Data);
+                                pbSharedClipboard1Image.Image = image;
+                                pbSharedClipboard1Image.Visible = true;
+                                lbShared1Image.Visible = true;
 
-                            tbSharedClipboard1Text.Text = null;
-                            tbSharedClipboard1Text.Visible = false;
-                            lbShared1Text.Visible = false;
+                                lbSharedClipboard1FileDropList.Items.Clear();
+                                lbSharedClipboard1FileDropList.Visible = false;
+                                lbShared1Files.Visible = false;
+                                break;
+                            case ClipboardDataType.FILES:
+                                List<ClipboardFile> files = JsonConvert.DeserializeObject<List<ClipboardFile>>(clipboardData.Data);
 
-                            pbSharedClipboard1Image.Image = null;
-                            pbSharedClipboard1Image.Visible = false;
-                            lbShared1Image.Visible = false;
+                                tbSharedClipboard1Text.Text = null;
+                                tbSharedClipboard1Text.Visible = false;
+                                lbShared1Text.Visible = false;
 
-                            lbSharedClipboard1FileDropList.Items.Clear();
-                            foreach (ClipboardFile clipboardFile in files)
-                            {
-                                lbSharedClipboard1FileDropList.Items.Add(clipboardFile.Name);
-                            }
-                            lbSharedClipboard1FileDropList.Visible = true;
-                            lbShared1Files.Visible = true;
-                            break;
-                        default:
-                            Console.WriteLine("Unknown clipboard data type");
-                            break;
+                                pbSharedClipboard1Image.Image = null;
+                                pbSharedClipboard1Image.Visible = false;
+                                lbShared1Image.Visible = false;
+
+                                lbSharedClipboard1FileDropList.Items.Clear();
+                                foreach (ClipboardFile clipboardFile in files)
+                                {
+                                    lbSharedClipboard1FileDropList.Items.Add(clipboardFile.Name);
+                                }
+                                lbSharedClipboard1FileDropList.Visible = true;
+                                lbShared1Files.Visible = true;
+                                break;
+                            default:
+                                Console.WriteLine("Unknown clipboard data type");
+                                break;
+                        }
+                    }
+                    else if (clipboardData.Id == copyHotKeyRegisterId2.ToString())
+                    {
+                        lbShared2Name.Text = clipboardData.Sender;
+
+                        switch (clipboardData.Type)
+                        {
+                            case ClipboardDataType.TEXT:
+                                string text = clipboardData.Data;
+
+                                tbSharedClipboard2Text.Text = text;
+                                tbSharedClipboard2Text.Visible = true;
+                                lbShared2Text.Visible = true;
+
+                                pbSharedClipboard2Image.Image = null;
+                                pbSharedClipboard2Image.Visible = false;
+                                lbShared2Image.Visible = false;
+
+                                lbSharedClipboard2FileDropList.Items.Clear();
+                                lbSharedClipboard2FileDropList.Visible = false;
+                                lbShared2Files.Visible = false;
+                                break;
+                            case ClipboardDataType.IMAGE:
+                                Image image = ImageUtils.Base64ToImage(clipboardData.Data);
+
+                                tbSharedClipboard2Text.Text = null;
+                                tbSharedClipboard2Text.Visible = false;
+                                lbShared2Text.Visible = false;
+
+                                pbSharedClipboard2Image.Image = image;
+                                pbSharedClipboard2Image.Visible = true;
+                                lbShared2Image.Visible = true;
+
+                                lbSharedClipboard2FileDropList.Items.Clear();
+                                lbSharedClipboard2FileDropList.Visible = false;
+                                lbShared2Files.Visible = false;
+                                break;
+                            case ClipboardDataType.FILES:
+                                List<ClipboardFile> files = JsonConvert.DeserializeObject<List<ClipboardFile>>(clipboardData.Data);
+
+                                tbSharedClipboard2Text.Text = null;
+                                tbSharedClipboard2Text.Visible = false;
+                                lbShared2Text.Visible = false;
+
+                                pbSharedClipboard2Image.Image = null;
+                                pbSharedClipboard2Image.Visible = false;
+                                lbShared2Image.Visible = false;
+
+                                lbSharedClipboard2FileDropList.Items.Clear();
+                                foreach (ClipboardFile clipboardFile in files)
+                                {
+                                    lbSharedClipboard2FileDropList.Items.Add(clipboardFile.Name);
+                                }
+                                lbSharedClipboard2FileDropList.Visible = true;
+                                lbShared2Files.Visible = true;
+                                break;
+                            default:
+                                Console.WriteLine("Unknown clipboard data type");
+                                break;
+                        }
+                    }
+                    else if (clipboardData.Id == copyHotKeyRegisterId3.ToString())
+                    {
+                        lbShared3Name.Text = clipboardData.Sender;
+
+                        switch (clipboardData.Type)
+                        {
+                            case ClipboardDataType.TEXT:
+                                string text = clipboardData.Data;
+
+                                tbSharedClipboard3Text.Text = text;
+                                tbSharedClipboard3Text.Visible = true;
+                                lbShared3Text.Visible = true;
+
+                                pbSharedClipboard3Image.Image = null;
+                                pbSharedClipboard3Image.Visible = false;
+                                lbShared3Image.Visible = false;
+
+                                lbSharedClipboard3FileDropList.Items.Clear();
+                                lbSharedClipboard3FileDropList.Visible = false;
+                                lbShared3Files.Visible = false;
+                                break;
+                            case ClipboardDataType.IMAGE:
+                                Image image = ImageUtils.Base64ToImage(clipboardData.Data);
+
+                                tbSharedClipboard3Text.Text = null;
+                                tbSharedClipboard3Text.Visible = false;
+                                lbShared3Text.Visible = false;
+
+                                pbSharedClipboard3Image.Image = image;
+                                pbSharedClipboard3Image.Visible = true;
+                                lbShared3Image.Visible = true;
+
+                                lbSharedClipboard3FileDropList.Items.Clear();
+                                lbSharedClipboard3FileDropList.Visible = false;
+                                lbShared3Files.Visible = false;
+                                break;
+                            case ClipboardDataType.FILES:
+                                List<ClipboardFile> files = JsonConvert.DeserializeObject<List<ClipboardFile>>(clipboardData.Data);
+
+                                tbSharedClipboard3Text.Text = null;
+                                tbSharedClipboard3Text.Visible = false;
+                                lbShared3Text.Visible = false;
+
+                                pbSharedClipboard3Image.Image = null;
+                                pbSharedClipboard3Image.Visible = false;
+                                lbShared3Image.Visible = false;
+
+                                lbSharedClipboard3FileDropList.Items.Clear();
+                                foreach (ClipboardFile clipboardFile in files)
+                                {
+                                    lbSharedClipboard3FileDropList.Items.Add(clipboardFile.Name);
+                                }
+                                lbSharedClipboard3FileDropList.Visible = true;
+                                lbShared3Files.Visible = true;
+                                break;
+                            default:
+                                Console.WriteLine("Unknown clipboard data type");
+                                break;
+                        }
                     }
                 }
             }, null);
@@ -443,16 +627,16 @@ namespace SharedClipboard
         protected override void OnClosed(EventArgs e)
         {
             Console.WriteLine("Closing.");
-            if (copyHotKeyToRegister != null)
+            if (copyHotKeyToRegister1 != null)
             {
-                copyHotKeyToRegister.Dispose();
-                copyHotKeyToRegister = null;
+                copyHotKeyToRegister1.Dispose();
+                copyHotKeyToRegister1 = null;
             }
 
-            if (pasteHotKeyToRegister != null)
+            if (pasteHotKeyToRegister1 != null)
             {
-                pasteHotKeyToRegister.Dispose();
-                pasteHotKeyToRegister = null;
+                pasteHotKeyToRegister1.Dispose();
+                pasteHotKeyToRegister1 = null;
             }
 
             if (clipboardManager != null)

@@ -261,9 +261,9 @@ namespace SharedClipboard.Manager
             //}, null, TimeSpan.FromMilliseconds(10000), TimeSpan.FromMilliseconds(-1));
         }
 
-        internal void CopySharedToLocal()
+        internal void CopySharedToLocal(int id)
         {
-            string Id = "1";
+            string Id = id.ToString();
             ClipboardData clipboardData = sharedClipboard[Id];
 
             if (clipboardData != null)

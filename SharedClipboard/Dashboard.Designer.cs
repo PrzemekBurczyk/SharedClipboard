@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(Dashboard));
             this.lbCopyKey = new System.Windows.Forms.Label();
             this.tbCopyHotKey = new System.Windows.Forms.TextBox();
             this.btnCopyRegister = new System.Windows.Forms.Button();
@@ -115,14 +116,12 @@
             // 
             // lbNotice
             // 
-            this.lbNotice.AutoSize = true;
             this.lbNotice.Font = new System.Drawing.Font("Microsoft Sans Serif", 7F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(238)));
             this.lbNotice.Location = new System.Drawing.Point(11, 71);
             this.lbNotice.Name = "lbNotice";
-            this.lbNotice.Size = new System.Drawing.Size(535, 13);
+            this.lbNotice.Size = new System.Drawing.Size(540, 26);
             this.lbNotice.TabIndex = 4;
-            this.lbNotice.Text = "Please click the textbox and press keys.  The keys must be in combination with th" +
-    "e Ctrl, Shift or Alt (e.g. Ctrl+Alt+T)";
+            this.lbNotice.Text = resources.GetString("lbNotice.Text");
             // 
             // tbLocalClipboardText
             // 
@@ -326,142 +325,142 @@
             this.lbShared1Name.Size = new System.Drawing.Size(0, 13);
             this.lbShared1Name.TabIndex = 24;
             // 
-            // label1
+            // lbShared3Name
             // 
             this.lbShared3Name.AutoSize = true;
             this.lbShared3Name.Location = new System.Drawing.Point(386, 371);
-            this.lbShared3Name.Name = "label1";
+            this.lbShared3Name.Name = "lbShared3Name";
             this.lbShared3Name.Size = new System.Drawing.Size(0, 13);
             this.lbShared3Name.TabIndex = 31;
             // 
-            // label2
+            // lbShared3Files
             // 
             this.lbShared3Files.AutoSize = true;
             this.lbShared3Files.Location = new System.Drawing.Point(384, 400);
-            this.lbShared3Files.Name = "label2";
+            this.lbShared3Files.Name = "lbShared3Files";
             this.lbShared3Files.Size = new System.Drawing.Size(28, 13);
             this.lbShared3Files.TabIndex = 30;
             this.lbShared3Files.Text = "Files";
             this.lbShared3Files.Visible = false;
             // 
-            // label3
+            // lbShared3Image
             // 
             this.lbShared3Image.AutoSize = true;
             this.lbShared3Image.Location = new System.Drawing.Point(386, 400);
-            this.lbShared3Image.Name = "label3";
+            this.lbShared3Image.Name = "lbShared3Image";
             this.lbShared3Image.Size = new System.Drawing.Size(36, 13);
             this.lbShared3Image.TabIndex = 29;
             this.lbShared3Image.Text = "Image";
             this.lbShared3Image.Visible = false;
             // 
-            // label4
+            // lbShared3Text
             // 
             this.lbShared3Text.AutoSize = true;
             this.lbShared3Text.Location = new System.Drawing.Point(386, 400);
-            this.lbShared3Text.Name = "label4";
+            this.lbShared3Text.Name = "lbShared3Text";
             this.lbShared3Text.Size = new System.Drawing.Size(28, 13);
             this.lbShared3Text.TabIndex = 28;
             this.lbShared3Text.Text = "Text";
             this.lbShared3Text.Visible = false;
             // 
-            // listBox1
+            // lbSharedClipboard3FileDropList
             // 
             this.lbSharedClipboard3FileDropList.FormattingEnabled = true;
             this.lbSharedClipboard3FileDropList.HorizontalScrollbar = true;
             this.lbSharedClipboard3FileDropList.Location = new System.Drawing.Point(387, 416);
-            this.lbSharedClipboard3FileDropList.Name = "listBox1";
+            this.lbSharedClipboard3FileDropList.Name = "lbSharedClipboard3FileDropList";
             this.lbSharedClipboard3FileDropList.SelectionMode = System.Windows.Forms.SelectionMode.None;
             this.lbSharedClipboard3FileDropList.Size = new System.Drawing.Size(162, 160);
             this.lbSharedClipboard3FileDropList.TabIndex = 27;
             this.lbSharedClipboard3FileDropList.Visible = false;
             // 
-            // pictureBox1
+            // pbSharedClipboard3Image
             // 
             this.pbSharedClipboard3Image.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pbSharedClipboard3Image.Location = new System.Drawing.Point(389, 416);
-            this.pbSharedClipboard3Image.Name = "pictureBox1";
+            this.pbSharedClipboard3Image.Name = "pbSharedClipboard3Image";
             this.pbSharedClipboard3Image.Size = new System.Drawing.Size(162, 162);
             this.pbSharedClipboard3Image.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbSharedClipboard3Image.TabIndex = 26;
             this.pbSharedClipboard3Image.TabStop = false;
             this.pbSharedClipboard3Image.Visible = false;
             // 
-            // textBox1
+            // tbSharedClipboard3Text
             // 
             this.tbSharedClipboard3Text.Location = new System.Drawing.Point(389, 416);
             this.tbSharedClipboard3Text.Multiline = true;
-            this.tbSharedClipboard3Text.Name = "textBox1";
+            this.tbSharedClipboard3Text.Name = "tbSharedClipboard3Text";
             this.tbSharedClipboard3Text.ReadOnly = true;
             this.tbSharedClipboard3Text.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.tbSharedClipboard3Text.Size = new System.Drawing.Size(162, 162);
             this.tbSharedClipboard3Text.TabIndex = 25;
             this.tbSharedClipboard3Text.Visible = false;
             // 
-            // label5
+            // lbShared2Name
             // 
             this.lbShared2Name.AutoSize = true;
             this.lbShared2Name.Location = new System.Drawing.Point(199, 371);
-            this.lbShared2Name.Name = "label5";
+            this.lbShared2Name.Name = "lbShared2Name";
             this.lbShared2Name.Size = new System.Drawing.Size(0, 13);
             this.lbShared2Name.TabIndex = 38;
             // 
-            // label6
+            // lbShared2Files
             // 
             this.lbShared2Files.AutoSize = true;
             this.lbShared2Files.Location = new System.Drawing.Point(197, 400);
-            this.lbShared2Files.Name = "label6";
+            this.lbShared2Files.Name = "lbShared2Files";
             this.lbShared2Files.Size = new System.Drawing.Size(28, 13);
             this.lbShared2Files.TabIndex = 37;
             this.lbShared2Files.Text = "Files";
             this.lbShared2Files.Visible = false;
             // 
-            // label8
+            // lbShared2Image
             // 
             this.lbShared2Image.AutoSize = true;
             this.lbShared2Image.Location = new System.Drawing.Point(199, 400);
-            this.lbShared2Image.Name = "label8";
+            this.lbShared2Image.Name = "lbShared2Image";
             this.lbShared2Image.Size = new System.Drawing.Size(36, 13);
             this.lbShared2Image.TabIndex = 36;
             this.lbShared2Image.Text = "Image";
             this.lbShared2Image.Visible = false;
             // 
-            // label9
+            // lbShared2Text
             // 
             this.lbShared2Text.AutoSize = true;
             this.lbShared2Text.Location = new System.Drawing.Point(199, 400);
-            this.lbShared2Text.Name = "label9";
+            this.lbShared2Text.Name = "lbShared2Text";
             this.lbShared2Text.Size = new System.Drawing.Size(28, 13);
             this.lbShared2Text.TabIndex = 35;
             this.lbShared2Text.Text = "Text";
             this.lbShared2Text.Visible = false;
             // 
-            // listBox2
+            // lbSharedClipboard2FileDropList
             // 
             this.lbSharedClipboard2FileDropList.FormattingEnabled = true;
             this.lbSharedClipboard2FileDropList.HorizontalScrollbar = true;
             this.lbSharedClipboard2FileDropList.Location = new System.Drawing.Point(200, 416);
-            this.lbSharedClipboard2FileDropList.Name = "listBox2";
+            this.lbSharedClipboard2FileDropList.Name = "lbSharedClipboard2FileDropList";
             this.lbSharedClipboard2FileDropList.SelectionMode = System.Windows.Forms.SelectionMode.None;
             this.lbSharedClipboard2FileDropList.Size = new System.Drawing.Size(162, 160);
             this.lbSharedClipboard2FileDropList.TabIndex = 34;
             this.lbSharedClipboard2FileDropList.Visible = false;
             // 
-            // pictureBox2
+            // pbSharedClipboard2Image
             // 
             this.pbSharedClipboard2Image.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
             this.pbSharedClipboard2Image.Location = new System.Drawing.Point(202, 416);
-            this.pbSharedClipboard2Image.Name = "pictureBox2";
+            this.pbSharedClipboard2Image.Name = "pbSharedClipboard2Image";
             this.pbSharedClipboard2Image.Size = new System.Drawing.Size(162, 162);
             this.pbSharedClipboard2Image.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbSharedClipboard2Image.TabIndex = 33;
             this.pbSharedClipboard2Image.TabStop = false;
             this.pbSharedClipboard2Image.Visible = false;
             // 
-            // textBox2
+            // tbSharedClipboard2Text
             // 
             this.tbSharedClipboard2Text.Location = new System.Drawing.Point(202, 416);
             this.tbSharedClipboard2Text.Multiline = true;
-            this.tbSharedClipboard2Text.Name = "textBox2";
+            this.tbSharedClipboard2Text.Name = "tbSharedClipboard2Text";
             this.tbSharedClipboard2Text.ReadOnly = true;
             this.tbSharedClipboard2Text.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.tbSharedClipboard2Text.Size = new System.Drawing.Size(162, 162);
