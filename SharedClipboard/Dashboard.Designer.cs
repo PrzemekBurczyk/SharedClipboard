@@ -41,20 +41,20 @@
             this.btnPasteRegister = new System.Windows.Forms.Button();
             this.tbPasteHotKey = new System.Windows.Forms.TextBox();
             this.lbPasteKey = new System.Windows.Forms.Label();
-            this.label1 = new System.Windows.Forms.Label();
-            this.label2 = new System.Windows.Forms.Label();
-            this.label3 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
-            this.label5 = new System.Windows.Forms.Label();
-            this.label6 = new System.Windows.Forms.Label();
-            this.lbSharedClipboardFileDropList = new System.Windows.Forms.ListBox();
-            this.pbSharedClipboardImage = new System.Windows.Forms.PictureBox();
+            this.lbLocalText = new System.Windows.Forms.Label();
+            this.lbLocalImage = new System.Windows.Forms.Label();
+            this.lbLocalFiles = new System.Windows.Forms.Label();
+            this.lbShared1Files = new System.Windows.Forms.Label();
+            this.lbShared1Image = new System.Windows.Forms.Label();
+            this.lbShared1Text = new System.Windows.Forms.Label();
+            this.lbSharedClipboard1FileDropList = new System.Windows.Forms.ListBox();
+            this.pbSharedClipboard1Image = new System.Windows.Forms.PictureBox();
             this.label7 = new System.Windows.Forms.Label();
-            this.tbSharedClipboardText = new System.Windows.Forms.TextBox();
+            this.tbSharedClipboard1Text = new System.Windows.Forms.TextBox();
             this.lbLocalName = new System.Windows.Forms.Label();
-            this.lbSharedName = new System.Windows.Forms.Label();
+            this.lbShared1Name = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.pbLocalClipboardImage)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbSharedClipboardImage)).BeginInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbSharedClipboard1Image)).BeginInit();
             this.SuspendLayout();
             // 
             // lbCopyKey
@@ -117,6 +117,7 @@
             this.tbLocalClipboardText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
             this.tbLocalClipboardText.Size = new System.Drawing.Size(162, 162);
             this.tbLocalClipboardText.TabIndex = 5;
+            this.tbLocalClipboardText.Visible = false;
             // 
             // lbClipboard
             // 
@@ -131,22 +132,24 @@
             // pbLocalClipboardImage
             // 
             this.pbLocalClipboardImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbLocalClipboardImage.Location = new System.Drawing.Point(198, 149);
+            this.pbLocalClipboardImage.Location = new System.Drawing.Point(14, 149);
             this.pbLocalClipboardImage.Name = "pbLocalClipboardImage";
             this.pbLocalClipboardImage.Size = new System.Drawing.Size(162, 162);
             this.pbLocalClipboardImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
             this.pbLocalClipboardImage.TabIndex = 7;
             this.pbLocalClipboardImage.TabStop = false;
+            this.pbLocalClipboardImage.Visible = false;
             // 
             // lbLocalClipboardFileDropList
             // 
             this.lbLocalClipboardFileDropList.FormattingEnabled = true;
             this.lbLocalClipboardFileDropList.HorizontalScrollbar = true;
-            this.lbLocalClipboardFileDropList.Location = new System.Drawing.Point(383, 149);
+            this.lbLocalClipboardFileDropList.Location = new System.Drawing.Point(14, 151);
             this.lbLocalClipboardFileDropList.Name = "lbLocalClipboardFileDropList";
             this.lbLocalClipboardFileDropList.SelectionMode = System.Windows.Forms.SelectionMode.None;
             this.lbLocalClipboardFileDropList.Size = new System.Drawing.Size(162, 160);
             this.lbLocalClipboardFileDropList.TabIndex = 8;
+            this.lbLocalClipboardFileDropList.Visible = false;
             // 
             // btnPasteUnregister
             // 
@@ -190,77 +193,85 @@
             // 
             // label1
             // 
-            this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(11, 133);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(28, 13);
-            this.label1.TabIndex = 13;
-            this.label1.Text = "Text";
+            this.lbLocalText.AutoSize = true;
+            this.lbLocalText.Location = new System.Drawing.Point(11, 133);
+            this.lbLocalText.Name = "label1";
+            this.lbLocalText.Size = new System.Drawing.Size(28, 13);
+            this.lbLocalText.TabIndex = 13;
+            this.lbLocalText.Text = "Text";
+            this.lbLocalText.Visible = false;
             // 
-            // label2
+            // lbLocalImage
             // 
-            this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(198, 130);
-            this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(36, 13);
-            this.label2.TabIndex = 14;
-            this.label2.Text = "Image";
+            this.lbLocalImage.AutoSize = true;
+            this.lbLocalImage.Location = new System.Drawing.Point(14, 133);
+            this.lbLocalImage.Name = "lbLocalImage";
+            this.lbLocalImage.Size = new System.Drawing.Size(36, 13);
+            this.lbLocalImage.TabIndex = 14;
+            this.lbLocalImage.Text = "Image";
+            this.lbLocalImage.Visible = false;
             // 
-            // label3
+            // lbLocalFiles
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(383, 132);
-            this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(28, 13);
-            this.label3.TabIndex = 15;
-            this.label3.Text = "Files";
+            this.lbLocalFiles.AutoSize = true;
+            this.lbLocalFiles.Location = new System.Drawing.Point(14, 135);
+            this.lbLocalFiles.Name = "lbLocalFiles";
+            this.lbLocalFiles.Size = new System.Drawing.Size(28, 13);
+            this.lbLocalFiles.TabIndex = 15;
+            this.lbLocalFiles.Text = "Files";
+            this.lbLocalFiles.Visible = false;
             // 
             // label4
             // 
-            this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(383, 367);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(28, 13);
-            this.label4.TabIndex = 22;
-            this.label4.Text = "Files";
+            this.lbShared1Files.AutoSize = true;
+            this.lbShared1Files.Location = new System.Drawing.Point(9, 368);
+            this.lbShared1Files.Name = "label4";
+            this.lbShared1Files.Size = new System.Drawing.Size(28, 13);
+            this.lbShared1Files.TabIndex = 22;
+            this.lbShared1Files.Text = "Files";
+            this.lbShared1Files.Visible = false;
             // 
             // label5
             // 
-            this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(198, 365);
-            this.label5.Name = "label5";
-            this.label5.Size = new System.Drawing.Size(36, 13);
-            this.label5.TabIndex = 21;
-            this.label5.Text = "Image";
+            this.lbShared1Image.AutoSize = true;
+            this.lbShared1Image.Location = new System.Drawing.Point(11, 368);
+            this.lbShared1Image.Name = "label5";
+            this.lbShared1Image.Size = new System.Drawing.Size(36, 13);
+            this.lbShared1Image.TabIndex = 21;
+            this.lbShared1Image.Text = "Image";
+            this.lbShared1Image.Visible = false;
             // 
             // label6
             // 
-            this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(11, 368);
-            this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(28, 13);
-            this.label6.TabIndex = 20;
-            this.label6.Text = "Text";
+            this.lbShared1Text.AutoSize = true;
+            this.lbShared1Text.Location = new System.Drawing.Point(11, 368);
+            this.lbShared1Text.Name = "label6";
+            this.lbShared1Text.Size = new System.Drawing.Size(28, 13);
+            this.lbShared1Text.TabIndex = 20;
+            this.lbShared1Text.Text = "Text";
+            this.lbShared1Text.Visible = false;
             // 
             // lbSharedClipboardFileDropList
             // 
-            this.lbSharedClipboardFileDropList.FormattingEnabled = true;
-            this.lbSharedClipboardFileDropList.HorizontalScrollbar = true;
-            this.lbSharedClipboardFileDropList.Location = new System.Drawing.Point(383, 384);
-            this.lbSharedClipboardFileDropList.Name = "lbSharedClipboardFileDropList";
-            this.lbSharedClipboardFileDropList.SelectionMode = System.Windows.Forms.SelectionMode.None;
-            this.lbSharedClipboardFileDropList.Size = new System.Drawing.Size(162, 160);
-            this.lbSharedClipboardFileDropList.TabIndex = 19;
+            this.lbSharedClipboard1FileDropList.FormattingEnabled = true;
+            this.lbSharedClipboard1FileDropList.HorizontalScrollbar = true;
+            this.lbSharedClipboard1FileDropList.Location = new System.Drawing.Point(12, 384);
+            this.lbSharedClipboard1FileDropList.Name = "lbSharedClipboardFileDropList";
+            this.lbSharedClipboard1FileDropList.SelectionMode = System.Windows.Forms.SelectionMode.None;
+            this.lbSharedClipboard1FileDropList.Size = new System.Drawing.Size(162, 160);
+            this.lbSharedClipboard1FileDropList.TabIndex = 19;
+            this.lbSharedClipboard1FileDropList.Visible = false;
             // 
             // pbSharedClipboardImage
             // 
-            this.pbSharedClipboardImage.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.pbSharedClipboardImage.Location = new System.Drawing.Point(198, 384);
-            this.pbSharedClipboardImage.Name = "pbSharedClipboardImage";
-            this.pbSharedClipboardImage.Size = new System.Drawing.Size(162, 162);
-            this.pbSharedClipboardImage.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
-            this.pbSharedClipboardImage.TabIndex = 18;
-            this.pbSharedClipboardImage.TabStop = false;
+            this.pbSharedClipboard1Image.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
+            this.pbSharedClipboard1Image.Location = new System.Drawing.Point(14, 384);
+            this.pbSharedClipboard1Image.Name = "pbSharedClipboardImage";
+            this.pbSharedClipboard1Image.Size = new System.Drawing.Size(162, 162);
+            this.pbSharedClipboard1Image.SizeMode = System.Windows.Forms.PictureBoxSizeMode.StretchImage;
+            this.pbSharedClipboard1Image.TabIndex = 18;
+            this.pbSharedClipboard1Image.TabStop = false;
+            this.pbSharedClipboard1Image.Visible = false;
             // 
             // label7
             // 
@@ -274,13 +285,14 @@
             // 
             // tbSharedClipboardText
             // 
-            this.tbSharedClipboardText.Location = new System.Drawing.Point(14, 384);
-            this.tbSharedClipboardText.Multiline = true;
-            this.tbSharedClipboardText.Name = "tbSharedClipboardText";
-            this.tbSharedClipboardText.ReadOnly = true;
-            this.tbSharedClipboardText.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
-            this.tbSharedClipboardText.Size = new System.Drawing.Size(162, 162);
-            this.tbSharedClipboardText.TabIndex = 16;
+            this.tbSharedClipboard1Text.Location = new System.Drawing.Point(14, 384);
+            this.tbSharedClipboard1Text.Multiline = true;
+            this.tbSharedClipboard1Text.Name = "tbSharedClipboardText";
+            this.tbSharedClipboard1Text.ReadOnly = true;
+            this.tbSharedClipboard1Text.ScrollBars = System.Windows.Forms.ScrollBars.Vertical;
+            this.tbSharedClipboard1Text.Size = new System.Drawing.Size(162, 162);
+            this.tbSharedClipboard1Text.TabIndex = 16;
+            this.tbSharedClipboard1Text.Visible = false;
             // 
             // lbLocalName
             // 
@@ -292,29 +304,29 @@
             // 
             // lbSharedName
             // 
-            this.lbSharedName.AutoSize = true;
-            this.lbSharedName.Location = new System.Drawing.Point(156, 344);
-            this.lbSharedName.Name = "lbSharedName";
-            this.lbSharedName.Size = new System.Drawing.Size(0, 13);
-            this.lbSharedName.TabIndex = 24;
+            this.lbShared1Name.AutoSize = true;
+            this.lbShared1Name.Location = new System.Drawing.Point(156, 344);
+            this.lbShared1Name.Name = "lbSharedName";
+            this.lbShared1Name.Size = new System.Drawing.Size(0, 13);
+            this.lbShared1Name.TabIndex = 24;
             // 
             // Dashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(561, 562);
-            this.Controls.Add(this.lbSharedName);
+            this.Controls.Add(this.lbShared1Name);
             this.Controls.Add(this.lbLocalName);
-            this.Controls.Add(this.label4);
-            this.Controls.Add(this.label5);
-            this.Controls.Add(this.label6);
-            this.Controls.Add(this.lbSharedClipboardFileDropList);
-            this.Controls.Add(this.pbSharedClipboardImage);
+            this.Controls.Add(this.lbShared1Files);
+            this.Controls.Add(this.lbShared1Image);
+            this.Controls.Add(this.lbShared1Text);
+            this.Controls.Add(this.lbSharedClipboard1FileDropList);
+            this.Controls.Add(this.pbSharedClipboard1Image);
             this.Controls.Add(this.label7);
-            this.Controls.Add(this.tbSharedClipboardText);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.label2);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.tbSharedClipboard1Text);
+            this.Controls.Add(this.lbLocalFiles);
+            this.Controls.Add(this.lbLocalImage);
+            this.Controls.Add(this.lbLocalText);
             this.Controls.Add(this.btnPasteUnregister);
             this.Controls.Add(this.btnPasteRegister);
             this.Controls.Add(this.tbPasteHotKey);
@@ -333,7 +345,7 @@
             this.Name = "Dashboard";
             this.Text = "Shared Clipboard Dashboard";
             ((System.ComponentModel.ISupportInitialize)(this.pbLocalClipboardImage)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.pbSharedClipboardImage)).EndInit();
+            ((System.ComponentModel.ISupportInitialize)(this.pbSharedClipboard1Image)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -354,18 +366,18 @@
         private System.Windows.Forms.Button btnPasteRegister;
         private System.Windows.Forms.TextBox tbPasteHotKey;
         private System.Windows.Forms.Label lbPasteKey;
-        private System.Windows.Forms.Label label1;
-        private System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label3;
-        private System.Windows.Forms.Label label4;
-        private System.Windows.Forms.Label label5;
-        private System.Windows.Forms.Label label6;
-        private System.Windows.Forms.ListBox lbSharedClipboardFileDropList;
-        private System.Windows.Forms.PictureBox pbSharedClipboardImage;
+        private System.Windows.Forms.Label lbLocalText;
+        private System.Windows.Forms.Label lbLocalImage;
+        private System.Windows.Forms.Label lbLocalFiles;
+        private System.Windows.Forms.Label lbShared1Files;
+        private System.Windows.Forms.Label lbShared1Image;
+        private System.Windows.Forms.Label lbShared1Text;
+        private System.Windows.Forms.ListBox lbSharedClipboard1FileDropList;
+        private System.Windows.Forms.PictureBox pbSharedClipboard1Image;
         private System.Windows.Forms.Label label7;
-        private System.Windows.Forms.TextBox tbSharedClipboardText;
+        private System.Windows.Forms.TextBox tbSharedClipboard1Text;
         private System.Windows.Forms.Label lbLocalName;
-        private System.Windows.Forms.Label lbSharedName;
+        private System.Windows.Forms.Label lbShared1Name;
     }
 }
 
