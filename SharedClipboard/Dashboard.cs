@@ -353,7 +353,7 @@ namespace SharedClipboard
         void PasteHotKeyPressed(object sender, int id)
         {
             Console.WriteLine("PASTE " + id);
-            clipboardManager.CopySharedToLocal(id);
+            clipboardManager.CopySharedToLocal(id - 1);
         }
 
         protected override void WndProc(ref Message m)
